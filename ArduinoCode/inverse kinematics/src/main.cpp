@@ -71,11 +71,6 @@ bool computeInverseKinematics(float x, float y, float z,
   //base
   theta0 = atan2(y, x) * 180.0 / PI;
 
-  //wrist
-  float wrist = atan2(Z, arm_length);
-  theta3 = wrist * 180.0 / PI;
-  dbg_wristTrigDeg = wrist * 180.0 / PI;
-
   //elbow
   float elbowtrig = (a*a + b*b - C*C) / (2*a*b);
   elbowtrig = constrain(elbowtrig, -1, 1);
@@ -85,12 +80,12 @@ bool computeInverseKinematics(float x, float y, float z,
 
   dbg_elbowTrigDeg = elbowtrig_angle * 180.0 / PI;
 
-  //shoulder
-  if (L3_offset > 0){
+  //shoulder and prep
   float shouldertrig = (a*a + C*C - b*b) / (2*a*C);
   shouldertrig = constrain(shouldertrig, -1, 1);
   float shouldertrig_angle = acos(shouldertrig);
 
+  if (L3_offset > 0){
   float shoulder_rightangle = atan(Z / L3_offset);
 
   float shoulder = shouldertrig_angle + shoulder_rightangle;
@@ -101,10 +96,6 @@ bool computeInverseKinematics(float x, float y, float z,
   }
 
   else if (L3_offset == 0){
-  float shouldertrig = (a*a + C*C - b*b) / (2*a*C);
-  shouldertrig = constrain(shouldertrig, -1, 1);
-  float shouldertrig_angle = acos(shouldertrig);
-
   float shoulder = shouldertrig_angle + PI/2;
 
   theta1 = (shoulder * 180.0 / PI);
@@ -112,10 +103,6 @@ bool computeInverseKinematics(float x, float y, float z,
   }
 
   else if (L3_offset < 0){
-  float shouldertrig = (a*a + C*C - b*b) / (2*a*C);
-  shouldertrig = constrain(shouldertrig, -1, 1);
-  float shouldertrig_angle = acos(shouldertrig);
-
   float shoulder_rightangle = PI - atan(Z / L3_offset);
 
   float shoulder = shouldertrig_angle - shoulder_rightangle;
@@ -126,9 +113,32 @@ bool computeInverseKinematics(float x, float y, float z,
   dbg_shoulderRightDeg = shoulder_rightangle * 180.0 / PI;
   }
 
-  else {
-    return false;
+  //wrist with prep
+  float L1_Z = a * fabs(sin(theta1 * PI / 180.0));
+  float Wrist_Y = L3 + b * cos((fabs(theta2 - ((theta2 - 90) * 2) - theta1)) * PI / 180.0);
+  float Wrist_Z = b * sin((fabs(theta2 - ((theta2 - 90) * 2) - theta1)) * PI / 180.0);
+
+  if (Wrist_Z == 0){ // traingle check on L2 and L3, if their is no triangle, their is nothing to calculate
+  theta3 = 90;
+  dbg_wristTrigDeg = theta3;
+  return true;
   }
+
+  float Wrist_ZY = sqrt(Wrist_Y*Wrist_Y + Wrist_Z*Wrist_Z);
+  float wristtrig = (L3*L3 + b*b - Wrist_ZY * Wrist_ZY) / (2*L3*b);
+  wristtrig = constrain(wristtrig, -1, 1);
+  float wristtrig_angle = acos(wristtrig);
+
+  if (L1_Z <= Z){
+  theta3 = (wristtrig_angle - PI/2) * 180.0 / PI;
+  }
+
+  else if (L1_Z > Z){
+  float theta3_before = (wristtrig_angle - PI/2) * 180.0 / PI;
+  theta3 = theta3_before - ((theta3_before - 90) * 2);
+  }
+
+  dbg_wristTrigDeg = theta3;
 
   return true;
 }
@@ -218,10 +228,8 @@ void loop() {
     Serial.println(dbgTrig);
     Serial.print("Shoulder right angle (deg): ");
     Serial.println(dbgRight);
-
     Serial.print("Elbow angle (deg): ");
     Serial.println(dbgElbow);
-
     Serial.print("Wrist angle (deg): ");
     Serial.println(dbgWrist);
 
@@ -278,7 +286,7 @@ void loop() {
     targetAngles[SERVO_BASE]     = t0;
     targetAngles[SERVO_SHOULDER] = t1 + 5;
     targetAngles[SERVO_ELBOW]    = t2 - 10;
-    targetAngles[SERVO_WRIST]    = t2 - (80 - t2) * 2;
+    targetAngles[SERVO_WRIST]    = t2;
 
     moveToTargetAngles();
 
@@ -294,7 +302,8 @@ void loop() {
     Serial.print("Actual Servo Angles: ");
     Serial.print(currentAngles[0]); Serial.print(" ");
     Serial.print(currentAngles[1]); Serial.print(" ");
-    Serial.println(currentAngles[2]);
+    Serial.print(currentAngles[2]); Serial.print(" ");
+    Serial.println(currentAngles[3]);
 
     Serial.print("FK Result XYZ: ");
     Serial.print(fx); Serial.print(" ");

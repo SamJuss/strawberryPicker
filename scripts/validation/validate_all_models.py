@@ -1,219 +1,268 @@
 #!/usr/bin/env python3
-"""Validate all trained models and save results in each model's folder"""
+"""
+Validate all detection models in model/detection/ folder
+- Runs inference on test set for each model
+- Generates comparison report
+- Saves results in each model's validation folder
+"""
 
-import os
 import sys
+import time
 from pathlib import Path
-import cv2
-from ultralytics import YOLO
-from datetime import datetime
+import argparse
 import json
+import pandas as pd
+from datetime import datetime
+from tqdm import tqdm
 
-def validate_model(model_path, output_dir, test_images, model_name):
-    """Validate a single model and save results"""
+# Add scripts to path
+sys.path.insert(0, str(Path(__file__).parent / 'scripts'))
+
+def validate_all_models(test_images=None, save_results=True, max_models=None):
+    """
+    Validate all models in model/detection/ folder
+
+    Args:
+        test_images: Path to test images directory
+        save_results: Whether to save validation results
+        max_models: Maximum number of models to validate (for testing)
+    """
     
-    if not Path(model_path).exists():
-        print(f"❌ Model not found: {model_path}")
-        return None
-    
-    print(f"\n{'='*60}")
-    print(f"VALIDATING: {model_name}")
-    print(f"Model: {model_path}")
-    print(f"Output: {output_dir}")
-    print(f"{'='*60}")
-    
+    # Import ultralytics
     try:
-        model = YOLO(str(model_path))
-    except Exception as e:
-        print(f"❌ Failed to load model: {e}")
+        from ultralytics import YOLO
+        import torch
+        import numpy as np
+    except ImportError as e:
+        print(f"❌ Import error: {e}")
+        print("Install with: pip install ultralytics pandas numpy tqdm")
+        sys.exit(1)
+    
+    # Setup paths
+    base_path = Path("/home/user/machine-learning/GitHubRepos/strawberryPicker")
+    
+    if test_images is None:
+        test_images = base_path / "model" / "dataset_strawberry_kaggle" / "test" / "images"
+    
+    detection_dir = base_path / "model" / "detection"
+    
+    # Find all model directories with best.pt
+    print(f"🔍 Scanning {detection_dir} for models...")
+    model_dirs = []
+    for model_dir in detection_dir.iterdir():
+        if model_dir.is_dir():
+            best_pt = model_dir / "weights" / "best.pt"
+            if best_pt.exists():
+                model_dirs.append({
+                    "dir": model_dir,
+                    "name": model_dir.name,
+                    "model_path": best_pt
+                })
+    
+    if not model_dirs:
+        print("❌ No models found in model/detection/")
         return None
     
-    # Create validation directory for this model
-    val_dir = Path(output_dir) / "validation"
-    val_dir.mkdir(parents=True, exist_ok=True)
+    # Sort by modification time (newest first)
+    model_dirs.sort(key=lambda x: x["dir"].stat().st_mtime, reverse=True)
     
-    results = {
-        'model_name': model_name,
-        'model_path': str(model_path),
-        'validation_date': datetime.now().isoformat(),
-        'test_images': [],
-        'summary': {
-            'total_images': 0,
-            'total_detections': 0,
-            'images_with_detections': 0,
-            'average_confidence': 0.0,
-            'average_detections_per_image': 0.0
-        }
-    }
-    
-    total_detections = 0
-    confidences = []
-    
-    for i, img_path in enumerate(test_images, 1):
-        if Path(img_path).exists():
-            print(f"🖼️  Testing image {i}: {Path(img_path).name}")
-            
-            try:
-                # Run detection
-                detections = model(img_path, conf=0.25, imgsz=416)
-                
-                # Count detections
-                num_detections = len(detections[0].boxes)
-                total_detections += num_detections
-                
-                # Extract confidences
-                if num_detections > 0:
-                    confs = [float(box.conf) for box in detections[0].boxes]
-                    confidences.extend(confs)
-                    avg_conf = sum(confs) / len(confs)
-                    print(f"   ✅ Detected {num_detections} strawberries")
-                    print(f"   📊 Average confidence: {avg_conf:.3f}")
-                else:
-                    avg_conf = 0.0
-                    print(f"   ⚠️  No strawberries detected")
-                
-                # Save visualization
-                result_img = detections[0].plot()
-                output_path = val_dir / f"validation_{Path(img_path).name}"
-                cv2.imwrite(str(output_path), result_img)
-                print(f"   💾 Saved to: {output_path}")
-                
-                # Store image result
-                image_result = {
-                    'image_path': str(img_path),
-                    'image_name': Path(img_path).name,
-                    'detections': num_detections,
-                    'average_confidence': avg_conf,
-                    'confidences': [float(box.conf) for box in detections[0].boxes] if num_detections > 0 else []
-                }
-                results['test_images'].append(image_result)
-                
-            except Exception as e:
-                print(f"   ❌ Error processing image: {e}")
-                continue
-        
-        print()
-    
-    # Calculate summary statistics
-    num_valid_images = len(results['test_images'])
-    if num_valid_images > 0:
-        results['summary']['total_images'] = num_valid_images
-        results['summary']['total_detections'] = total_detections
-        results['summary']['images_with_detections'] = len([img for img in results['test_images'] if img['detections'] > 0])
-        results['summary']['average_detections_per_image'] = total_detections / num_valid_images
-        
-        if confidences:
-            results['summary']['average_confidence'] = sum(confidences) / len(confidences)
-    
-    # Save results JSON
-    results_file = val_dir / "validation_results.json"
-    with open(results_file, 'w') as f:
-        json.dump(results, f, indent=2)
-    
-    # Create summary report
-    summary_file = val_dir / "validation_summary.md"
-    with open(summary_file, 'w') as f:
-        f.write(f"# {model_name} - Validation Results\n\n")
-        f.write(f"**Validation Date**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-        f.write(f"## Summary\n\n")
-        f.write(f"- **Total Images Tested**: {results['summary']['total_images']}\n")
-        f.write(f"- **Total Detections**: {results['summary']['total_detections']}\n")
-        f.write(f"- **Images with Detections**: {results['summary']['images_with_detections']}\n")
-        f.write(f"- **Detection Rate**: {results['summary']['images_with_detections']/results['summary']['total_images']*100:.1f}%\n")
-        f.write(f"- **Average Detections per Image**: {results['summary']['average_detections_per_image']:.2f}\n")
-        f.write(f"- **Average Confidence**: {results['summary']['average_confidence']:.3f}\n\n")
-        f.write(f"## Individual Image Results\n\n")
-        
-        for img in results['test_images']:
-            f.write(f"### {img['image_name']}\n")
-            f.write(f"- **Detections**: {img['detections']}\n")
-            f.write(f"- **Average Confidence**: {img['average_confidence']:.3f}\n")
-            f.write(f"- **Visualization**: validation_{img['image_name']}\n\n")
-    
-    # Print summary
-    print(f"📊 VALIDATION SUMMARY - {model_name}")
-    print(f"{'='*60}")
-    print(f"✅ Images tested: {results['summary']['total_images']}")
-    print(f"🍓 Total detections: {results['summary']['total_detections']}")
-    print(f"📈 Detection rate: {results['summary']['images_with_detections']/results['summary']['total_images']*100:.1f}%")
-    print(f"📊 Average confidence: {results['summary']['average_confidence']:.3f}")
-    print(f"💾 Results saved to: {val_dir}")
-    
-    return results
-
-def main():
-    """Main validation function"""
-    
-    # Define models to validate
-    models = [
-        {
-            'name': 'yolov8n_kaggle_2500images',
-            'path': 'model/detection/yolov8n_kaggle_2500images_trained_20251203_130255/weights/best.pt',
-            'output_dir': 'model/detection/yolov8n_kaggle_2500images_trained_20251203_130255'
-        },
-        {
-            'name': 'yolov8s_improved_detection_v2',
-            'path': 'model/detection/yolov8s_improved_detection_v2_20251202_153433/weights/best.pt',
-            'output_dir': 'model/detection/yolov8s_improved_detection_v2_20251202_153433'
-        },
-        {
-            'name': 'yolov8s_enhanced',
-            'path': 'model/detection/yolov8s_enhanced/strawberry_yolov8s_enhanced.pt',
-            'output_dir': 'model/detection/yolov8s_enhanced'
-        },
-        {
-            'name': 'yolov8n_baseline',
-            'path': 'model/detection/yolov8n/strawberry_yolov8n.pt',
-            'output_dir': 'model/detection/yolov8n'
-        },
-        {
-            'name': 'baseline',
-            'path': 'model/detection/baseline/First_run_Baseline.pt',
-            'output_dir': 'model/detection/baseline'
-        }
-    ]
-    
-    # Test images (same for all models)
-    test_images = [
-        '/home/user/Downloads/train/RottenStrawberry/RottenStrawberry (25).jpg',
-        '/home/user/Downloads/train/RottenStrawberry/RottenStrawberry (84).jpg',
-        '/home/user/Downloads/train/RottenStrawberry/RottenStrawberry (97).jpg',
-        '/home/user/Downloads/train/RottenStrawberry/RottenStrawberry (116).jpg',
-        '/home/user/Downloads/train/RottenStrawberry/RottenStrawberry (141).jpg'
-    ]
-    
-    print("🍓 COMPREHENSIVE MODEL VALIDATION")
-    print(f"Testing {len(models)} models on {len(test_images)} strawberry images")
+    print(f"📊 Found {len(model_dirs)} models")
     print("="*60)
     
-    all_results = []
+    # Limit models if specified
+    if max_models:
+        model_dirs = model_dirs[:max_models]
+        print(f"🔬 Validating first {max_models} models")
     
     # Validate each model
-    for model in models:
-        result = validate_model(
-            model_path=model['path'],
-            output_dir=model['output_dir'], 
-            test_images=test_images,
-            model_name=model['name']
-        )
-        if result:
-            all_results.append(result)
-        print("\n" + "="*80 + "\n")
+    all_results = []
     
-    # Create comparison summary
-    print("📋 COMPREHENSIVE VALIDATION SUMMARY")
+    for i, model_info in enumerate(model_dirs, 1):
+        print(f"\n[{i}/{len(model_dirs)}] Validating: {model_info['name']}")
+        print("-" * 60)
+        
+        try:
+            # Load model
+            model = YOLO(str(model_info['model_path']))
+            
+            # Get all test images
+            image_files = list(test_images.glob("*.jpg")) + list(test_images.glob("*.png")) + list(test_images.glob("*.jpeg"))
+            
+            if not image_files:
+                print(f"⚠️  No test images found")
+                continue
+            
+            # Run inference and collect metrics
+            inference_times = []
+            detections = []
+            all_confidences = []
+            
+            for img_path in tqdm(image_files, desc=f"Processing {model_info['name']}", leave=False):
+                # Measure inference time
+                start_time = time.time()
+                results = model(img_path, verbose=False)
+                inference_time = (time.time() - start_time) * 1000  # Convert to ms
+                inference_times.append(inference_time)
+                
+                # Extract detection data
+                result = results[0]
+                boxes = result.boxes
+                
+                if boxes is not None and len(boxes) > 0:
+                    # Get confidences
+                    confidences = boxes.conf.cpu().numpy()
+                    all_confidences.extend(confidences)
+                    
+                    # Count detections
+                    num_detections = len(boxes)
+                    detections.append(num_detections)
+                else:
+                    detections.append(0)
+            
+            # Calculate metrics
+            avg_inference_time = np.mean(inference_times)
+            std_inference_time = np.std(inference_times)
+            fps = 1000 / avg_inference_time
+            
+            avg_detections = np.mean(detections)
+            avg_confidence = np.mean(all_confidences) if all_confidences else 0
+            
+            # Load training results if available
+            training_results_path = model_info['model_path'].parent.parent / "results.csv"
+            training_metrics = {}
+            
+            if training_results_path.exists():
+                df = pd.read_csv(training_results_path)
+                if not df.empty:
+                    last_epoch = df.iloc[-1]
+                    training_metrics = {
+                        "training_mAP50": float(last_epoch.get("metrics/mAP50(B)", 0)),
+                        "training_precision": float(last_epoch.get("metrics/precision(B)", 0)),
+                        "training_recall": float(last_epoch.get("metrics/recall(B)", 0)),
+                        "training_epochs": int(len(df))
+                    }
+            
+            # Save results for this model
+            model_results = {
+                "model_name": model_info['name'],
+                "model_path": str(model_info['model_path']),
+                "num_test_images": len(image_files),
+                "inference_time_ms": {
+                    "mean": float(avg_inference_time),
+                    "std": float(std_inference_time),
+                    "min": float(np.min(inference_times)),
+                    "max": float(np.max(inference_times))
+                },
+                "fps": float(fps),
+                "avg_detections_per_image": float(avg_detections),
+                "avg_confidence": float(avg_confidence),
+                "training_metrics": training_metrics,
+                "validation_date": datetime.now().isoformat()
+            }
+            
+            all_results.append(model_results)
+            
+            # Save detailed results in model folder
+            if save_results:
+                validation_dir = model_info['model_path'].parent.parent / "validation" / f"batch_validation_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                validation_dir.mkdir(parents=True, exist_ok=True)
+                
+                # Save JSON
+                json_path = validation_dir / "validation_results.json"
+                with open(json_path, 'w') as f:
+                    json.dump(model_results, f, indent=2)
+                
+                # Save per-image CSV
+                csv_data = []
+                for i, img_path in enumerate(image_files):
+                    csv_data.append({
+                        "image": img_path.name,
+                        "inference_time_ms": float(inference_times[i]),
+                        "detections": int(detections[i])
+                    })
+                
+                csv_df = pd.DataFrame(csv_data)
+                csv_path = validation_dir / "per_image_results.csv"
+                csv_df.to_csv(csv_path, index=False)
+                
+                print(f"💾 Results saved to: {validation_dir}")
+            
+            # Print summary for this model
+            print(f"⚡ FPS: {fps:.1f} | mAP@50: {training_metrics.get('training_mAP50', 0):.3f} | Avg Det: {avg_detections:.2f}")
+            
+        except Exception as e:
+            print(f"❌ Error validating {model_info['name']}: {e}")
+            continue
+    
+    # Generate comparison report
+    print("\n" + "="*80)
+    print("📊 MODEL COMPARISON REPORT")
     print("="*80)
     
-    for result in all_results:
-        summary = result['summary']
-        print(f"\n🎯 **{result['model_name']}**")
-        print(f"   📊 Detection Rate: {summary['images_with_detections']/summary['total_images']*100:.1f}%")
-        print(f"   🍓 Avg Detections: {summary['average_detections_per_image']:.2f}")
-        print(f"   📈 Avg Confidence: {summary['average_confidence']:.3f}")
-        print(f"   💾 Results: validation/ folder")
+    if all_results:
+        # Create comparison table
+        comparison_data = []
+        for result in all_results:
+            comparison_data.append({
+                "Model": result["model_name"],
+                "FPS": f"{result['fps']:.1f}",
+                "mAP@50": f"{result['training_metrics'].get('training_mAP50', 0):.3f}",
+                "Precision": f"{result['training_metrics'].get('training_precision', 0):.3f}",
+                "Recall": f"{result['training_metrics'].get('training_recall', 0):.3f}",
+                "Avg Detections": f"{result['avg_detections_per_image']:.2f}",
+                "Avg Confidence": f"{result['avg_confidence']:.3f}",
+                "Epochs": result['training_metrics'].get('training_epochs', 0)
+            })
+        
+        comparison_df = pd.DataFrame(comparison_data)
+        
+        # Sort by mAP@50 (descending)
+        comparison_df['mAP@50_num'] = comparison_df['mAP@50'].astype(float)
+        comparison_df = comparison_df.sort_values('mAP@50_num', ascending=False).drop('mAP@50_num', axis=1)
+        
+        print(comparison_df.to_string(index=False))
+        
+        # Save comparison report
+        if save_results:
+            report_path = base_path / "model" / "detection" / "validation_comparison_report.csv"
+            comparison_df.to_csv(report_path, index=False)
+            print(f"\n💾 Comparison report saved to: {report_path}")
+        
+        # Find best model
+        best_model = max(all_results, key=lambda x: x['training_metrics'].get('training_mAP50', 0))
+        print(f"\n🏆 Best Model: {best_model['model_name']}")
+        print(f"   mAP@50: {best_model['training_metrics'].get('training_mAP50', 0):.3f}")
+        print(f"   FPS: {best_model['fps']:.1f}")
+        print(f"   Path: {best_model['model_path']}")
     
-    print(f"\n✅ All {len(all_results)} models validated successfully!")
-    print(f"📁 Detailed results saved in each model's validation folder")
+    print("\n" + "="*80)
+    print("✅ All models validated successfully!")
+    
+    return all_results
 
-if __name__ == '__main__':
+def main():
+    parser = argparse.ArgumentParser(description='Validate all detection models')
+    parser.add_argument('--test-images', type=str, default=None,
+                        help='Path to test images (default: dataset_strawberry_kaggle/test/images)')
+    parser.add_argument('--no-save', action='store_true',
+                        help='Do not save results')
+    parser.add_argument('--max-models', type=int, default=None,
+                        help='Maximum number of models to validate (for testing)')
+    
+    args = parser.parse_args()
+    
+    # Run validation
+    results = validate_all_models(
+        test_images=args.test_images,
+        save_results=not args.no_save,
+        max_models=args.max_models
+    )
+    
+    if results:
+        print(f"\n🎉 Successfully validated {len(results)} models")
+    else:
+        print("\n❌ Validation failed")
+        sys.exit(1)
+
+if __name__ == "__main__":
     main()

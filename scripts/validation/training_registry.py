@@ -107,7 +107,16 @@ class TrainingRegistry:
         if self.registry_path.exists():
             try:
                 with open(self.registry_path, 'r') as f:
-                    return json.load(f)
+                    data = json.load(f)
+                    # Handle new registry format with metadata
+                    if isinstance(data, dict) and 'models' in data:
+                        return data['models']
+                    # Handle old format (direct list) or other formats
+                    elif isinstance(data, list):
+                        return data
+                    else:
+                        print(f"Warning: Unknown registry format. Expected list or dict with 'models' key.")
+                        return []
             except Exception as e:
                 print(f"Warning: Could not load registry: {e}")
                 return []

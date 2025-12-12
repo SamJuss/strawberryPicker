@@ -101,9 +101,9 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
     # Use GPU if available
     device = '0' if env['has_gpu'] else 'cpu'
     
-    # Load pretrained YOLOv8n model
-    print("Loading YOLOv8n model...")
-    model = YOLO('yolov8n.pt')
+    # Load pretrained YOLOv11n model
+    print("Loading YOLOv11n model...")
+    model = YOLO('yolo11n.pt')
     
     # Training arguments
     train_args = {
@@ -144,7 +144,7 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
     training_duration = (time.time() - training_start_time) / 60  # minutes
     
     # Save final model
-    final_model_path = weights_dir / 'strawberry_yolov8n.pt'
+    final_model_path = weights_dir / 'strawberry_yolov11n.pt'
     model.save(str(final_model_path))
     
     print(f"\n{'='*60}")
@@ -171,9 +171,9 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
         training_log = {
             "run_id": f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "experiment_name": f"YOLOv8_{train_args.get('name', 'strawberry_detection')}",
+            "experiment_name": f"YOLOv11_{train_args.get('name', 'strawberry_detection')}",
             "model_type": "detection",
-            "model_architecture": "YOLOv8",
+            "model_architecture": "YOLOv11",
             "model_size": "n",
             "pretrained": True,
             "dataset_name": "strawberry_kaggle_2500",
@@ -231,21 +231,22 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
     return results, final_model_path
 
 def export_model(model_path, weights_dir):
-    """Export model to ONNX format"""
+    """Export model to ONNX format for Raspberry Pi deployment"""
     try:
         from ultralytics import YOLO
     except ImportError:
         print("ERROR: ultralytics not installed")
         return None
-    
+
     print(f"\nExporting model to ONNX...")
     model = YOLO(str(model_path))
-    
-    # Export to ONNX
-    onnx_path = weights_dir / 'strawberry_yolov8n.onnx'
-    model.export(format='onnx', imgsz=640, dynamic=True)
-    
+
+    # Export to ONNX with optimizations for edge deployment
+    onnx_path = weights_dir / 'strawberry_yolov11n.onnx'
+    model.export(format='onnx', imgsz=320, dynamic=True, simplify=True)
+
     print(f"ONNX model exported to: {onnx_path}")
+    print(f"Optimized for 320x320 input (better for Raspberry Pi)")
     return onnx_path
 
 def main():

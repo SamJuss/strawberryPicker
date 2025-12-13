@@ -39,39 +39,10 @@ model/exports/
 
 # Dataset (large files)
 model/dataset/
-model/datasets/
-datasets/
-datasets/**/*.jpg
-datasets/**/*.jpeg
-datasets/**/*.png
-datasets/**/*.zip
-!datasets/**/*.yaml
-!datasets/**/*.txt
-model/dataset_*/
-model/ripeness_*/
-model/ripeness-classification-dataset/
-model/ripeness_classification_dataset/
-model/ripeness_manual_dataset/
-model/ripeness_detection_dataset/
-model/test/
-model/train/
-model/valid/
 *.zip
 *.tar.gz
 *.tar
 data/
-*.cache
-*.zip:Zone.Identifier
-
-# Generated datasets (can be regenerated)
-model/dataset/**/*.jpg
-model/dataset/**/*.jpeg
-model/dataset/**/*.png
-model/dataset/**/*.bmp
-model/dataset/**/*.zip
-model/dataset/**/labels.cache
-!model/dataset/**/data.yaml
-!model/dataset/**/*.txt
 
 # IDE
 .vscode/
@@ -130,17 +101,6 @@ model/dataset/**/*.png
 model/dataset/**/*.zip
 !model/dataset/**/data.yaml
 !model/dataset/**/*.txt
-
-# Keep training scripts but ignore generated files
-model/**/*.log
-model/**/*.csv
-model/**/*.json
-model/**/weights/
-model/**/results/
-model/**/exports/
-!model/training/**/*.py
-!model/deployment/**/*.py
-!model/validation/**/*.py
 
 # Training artifacts
 *.weights
@@ -321,42 +281,3 @@ robot/logs/
 robot/calibration/
 robot/trajectories/
 *.bag
-# Model checkpoints (intermediate epochs)
-model/detection/**/weights/epoch*.pt
-
-# Archive folder (keep local but don't commit)
-model/detection/archive/
-
-# Temporary files
-*.tmp
-*.cache
-*.pkl
-*.log
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# PyTorch
-*.pth
-*.onnx
-*.engine
-*.trt
-
-# Calibration data (large binary files)
-calibration_image_sample_data*.npy

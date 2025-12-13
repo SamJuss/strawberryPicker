@@ -98,6 +98,17 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
     print(f"GPU Available: {env['has_gpu']} ({env['gpu_name']})")
     print(f"{'='*60}\n")
     
+    # Load dataset info
+    with open(data_yaml, 'r') as f:
+        data_info = yaml.safe_load(f)
+    num_classes = data_info['nc']
+    class_names = data_info['names']
+    dataset_name = data_yaml.parent.name
+    
+    print(f"Dataset: {dataset_name}")
+    print(f"Number of classes: {num_classes}")
+    print(f"Classes: {class_names}")
+    
     # Use GPU if available
     device = '0' if env['has_gpu'] else 'cpu'
     
@@ -113,7 +124,7 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
         'batch': batch_size,
         'device': device,
         'project': str(results_dir),
-        'name': 'strawberry_detection',
+        'name': f'{dataset_name}_detection',
         'exist_ok': True,
         'patience': 20,  # Early stopping patience
         'save': True,
@@ -144,13 +155,14 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
     training_duration = (time.time() - training_start_time) / 60  # minutes
     
     # Save final model
-    final_model_path = weights_dir / 'strawberry_yolov11n.pt'
+    model_name = f'{dataset_name}_yolov11n.pt'
+    final_model_path = weights_dir / model_name
     model.save(str(final_model_path))
     
     print(f"\n{'='*60}")
     print(f"Training completed!")
     print(f"Final model saved to: {final_model_path}")
-    print(f"Results saved to: {results_dir / 'strawberry_detection'}")
+    print(f"Results saved to: {results_dir / train_args['name']}")
     print(f"Training duration: {training_duration:.1f} minutes")
     print(f"{'='*60}\n")
     
@@ -171,15 +183,15 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
         training_log = {
             "run_id": f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "experiment_name": f"YOLOv11_{train_args.get('name', 'strawberry_detection')}",
+            "experiment_name": f"YOLOv11_{train_args['name']}",
             "model_type": "detection",
             "model_architecture": "YOLOv11",
             "model_size": "n",
             "pretrained": True,
-            "dataset_name": "strawberry_kaggle_2500",
-            "dataset_size": 2500,  # Our Kaggle dataset size
-            "num_classes": 1,
-            "class_names": ["strawberry"],
+            "dataset_name": dataset_name,
+            "dataset_size": "unknown",  # We don't have this info, can be updated later
+            "num_classes": num_classes,
+            "class_names": class_names,
             "batch_size": batch_size,
             "image_size": img_size,
             "epochs_planned": epochs,
@@ -203,8 +215,8 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
             "cuda_version": torch.version.cuda if torch.version.cuda else 'N/A',
             "os_info": f"{sys.platform}",
             "model_path": str(final_model_path),
-            "results_path": str(results_dir / 'strawberry_detection'),
-            "config_path": str(results_dir / 'strawberry_detection' / 'args.yaml'),
+            "results_path": str(results_dir / train_args['name']),
+            "config_path": str(results_dir / train_args['name'] / 'args.yaml'),
             "status": "completed"
         }
         

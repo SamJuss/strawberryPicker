@@ -98,15 +98,10 @@ def train_model(data_yaml, weights_dir, results_dir, epochs=100, img_size=640, b
     # Use GPU if available
     device = '0' if env['has_gpu'] else 'cpu'
     
-<<<<<<< HEAD:scripts/training/train_yolov8.py
-    model_source = Path(weights) if weights else 'yolo11n.pt'
+    # Load model (custom weights or default YOLOv8n)
+    model_source = Path(weights) if weights else 'yolov8n.pt'
     print(f"Loading model from {model_source}...")
     model = YOLO(str(model_source))
-=======
-    # Load pretrained YOLOv8n model
-    print("Loading YOLOv8n model...")
-    model = YOLO('yolov8n.pt')
->>>>>>> 6a34550ba143543d96468c33b83e12b8213ea246:train_yolov8.py
     
     # Training arguments
     train_args = {

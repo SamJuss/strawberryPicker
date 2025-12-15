@@ -1,4 +1,6 @@
+# ============================================
 # Python
+# ============================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,129 +25,9 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# PyTorch
-*.pth
-*.pt
-*.pkl
-
-# Model files
-*.h5
-*.tflite
-*.onnx
-*.pb
-model/weights/
-model/results/
-model/exports/
-
-# Dataset (large files)
-model/dataset/
-*.zip
-*.tar.gz
-*.tar
-data/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Logs
-*.log
-logs/
-
-# Environment
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# TensorBoard
-runs/
-*.tfevents.*
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
-# Training checkpoints
-*.pth.tar
-checkpoint/
-checkpoints/
-
-# Roboflow exports (can be regenerated)
-straw-detect.v1-straw-detect.yolov8/
-
-# Project specific
-# Keep dataset structure but ignore large files
-model/dataset/**/*.jpg
-model/dataset/**/*.jpeg
-model/dataset/**/*.png
-model/dataset/**/*.zip
-!model/dataset/**/data.yaml
-!model/dataset/**/*.txt
-
-# Training artifacts
-*.weights
-*.cfg
-*.data
-*.pt
-*.pth
-*.onnx
-*.tflite
-*.pb
-*.h5
-*.pkl
-*.pth.tar
-
-# Output directories
-model/weights/
-model/results/
-model/exports/
-runs/
-detect/
-predict/
-val/
-
-# Logs and caches
-*.log
-logs/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.cache/
-.parquet
-
-# IDE specific
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
-
-# Virtual environments
+# ============================================
+# Virtual Environments
+# ============================================
 .env
 .venv
 env/
@@ -156,18 +38,85 @@ venv.bak/
 pip-log.txt
 pip-delete-this-directory.txt
 
+# ============================================
+# IDE & Editor
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================
 # Jupyter Notebook
+# ============================================
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
-# Testing
-.coverage
+# ============================================
+# Model Files & Training Artifacts
+# ============================================
+# PyTorch / TensorFlow / Keras
+*.pth
+*.pt
+*.pkl
+*.h5
+*.tflite
+*.onnx
+*.pb
+*.weights
+*.cfg
+*.data
+*.pth.tar
+
+# Model directories (auto-generated)
+model/weights/
+model/results/
+model/exports/
+runs/
+detect/
+predict/
+val/
+checkpoint/
+checkpoints/
+
+# ============================================
+# Dataset & Large Files
+# ============================================
+# Raw images (can be regenerated)
+model/dataset/**/*.jpg
+model/dataset/**/*.jpeg
+model/dataset/**/*.png
+model/dataset/**/*.zip
+!model/dataset/**/data.yaml
+!model/dataset/**/*.txt
+
+# Roboflow exports
+straw-detect.v1-straw-detect.yolov8/
+
+# ============================================
+# Logs & Caches
+# ============================================
+*.log
+logs/
+.cache/
+.parquet
 .pytest_cache/
+.coverage
 htmlcov/
 .tox/
 .nox/
 
-# Build artifacts
+# ============================================
+# Build & Distribution
+# ============================================
 build/
 develop-eggs/
 dist/
@@ -188,7 +137,9 @@ MANIFEST
 pyproject.toml
 poetry.lock
 
-# Temporary files
+# ============================================
+# Temporary Files
+# ============================================
 tmp/
 temp/
 *.tmp
@@ -197,39 +148,33 @@ temp/
 *.swo
 *~
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# MLflow
-mlruns/
-mlflow.db
-
-# Weights & Biases
-wandb/
-
-# TensorBoard
-runs/
-*.tfevents.*
-events.out.tfevents.*
-
-# PyTorch
-*.pt
-*.pth
-*.pkl
-
-# OpenCV
+# ============================================
+# Media & Output Files
+# ============================================
 *.avi
 *.mp4
 *.mov
 *.mkv
+*.gcode
+*.factory
 
-# Calibration files
+# ============================================
+# ML Experiment Tracking
+# ============================================
+mlruns/
+mlflow.db
+wandb/
+
+# ============================================
+# TensorBoard
+# ============================================
+runs/
+*.tfevents.*
+events.out.tfevents.*
+
+# ============================================
+# Calibration & Configuration
+# ============================================
 *.calib
 *.yaml
 *.yml
@@ -238,24 +183,25 @@ events.out.tfevents.*
 !setup.py
 !pyproject.toml
 
-# Arduino build files
+# ============================================
+# Arduino Build Files
+# ============================================
 ArduinoCode/*.hex
 ArduinoCode/*.elf
 ArduinoCode/build/
 ArduinoCode/*.bin
 
-# SolidWorks temporary files
+# ============================================
+# SolidWorks & CAD Temporary Files
+# ============================================
 assets/solidworks/*.tmp
 assets/solidworks/~$*
 assets/solidworks/*.bak
 assets/solidworks/*.swp
 
-# STL processing files
-assets/stl/*.tmp
-*.gcode
-*.factory
-
-# Documentation builds
+# ============================================
+# Documentation Builds
+# ============================================
 docs/_build/
 site/
 *.pdf
@@ -264,19 +210,25 @@ site/
 *.xlsx
 *.pptx
 
-# Local configuration
+# ============================================
+# Secrets & Local Configuration
+# ============================================
 config.local.yaml
 secrets.yaml
 credentials.json
 *.key
 *.pem
 
-# Debug files
+# ============================================
+# Debug & Development
+# ============================================
 debug/
 debug_images/
 *.debug
 
-# Robot specific
+# ============================================
+# Robot Specific
+# ============================================
 robot/logs/
 robot/calibration/
 robot/trajectories/

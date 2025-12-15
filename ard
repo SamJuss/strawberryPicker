@@ -1,0 +1,327 @@
+#!/usr/bin/env python3
+"""
+Arduino Communication Bridge for Strawberry Picker
+Handles serial communication between Python pipeline and Arduino robotic arm
+"""
+
+import serial
+import time
+import json
+import logging
+import threading
+from datetime import datetime
+from typing import Optional, Dict, Any
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+class ArduinoBridge:
+    def __init__(self, port='/dev/ttyUSB0', baudrate=115200, timeout=1.0):
+        """Initialize Arduino communication bridge."""
+        self.port = port
+        self.baudrate = baudrate
+        self.timeout = timeout
+        self.connection = None
+        self.is_connected = False
+        self.command_queue = []
+        self.response_queue = []
+        self.lock = threading.Lock()
+        
+        # Robot state tracking
+        self.robot_state = {
+            'position': {'x': 0, 'y': 0, 'z': 0},
+            'status': 'idle',
+            'last_command': None,
+            'last_response': None,
+            'error_count': 0,
+            'uptime': 0
+        }
+        
+        # Command handlers
+        self.command_handlers = {
+            'PING': self._handle_ping,
+            'PICK': self._handle_pick,
+            'MOVE': self._handle_move,
+            'HOME': self._handle_home,
+            'STATUS': self._handle_status,
+            'RESET': self._handle_reset
+        }
+    
+    def connect(self) -> bool:
+        """Establish connection with Arduino."""
+        try:
+            logger.info(f"Connecting to Arduino on {self.port}...")
+            self.connection = serial.Serial(
+                port=self.port,
+                baudrate=self.baudrate,
+                timeout=self.timeout
+            )
+            
+            # Wait for Arduino to initialize
+            time.sleep(2)
+            
+            # Test connection
+            self.send_command("PING")
+            response = self.read_response()
+            
+            if response == "PONG":
+                self.is_connected = True
+                logger.info("Arduino connection established successfully")
+                
+                # Start communication threads
+                self._start_communication_threads()
+                return True
+            else:
+                logger.error(f"Arduino connection test failed. Response: {response}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Failed to connect to Arduino: {e}")
+            return False
+    
+    def disconnect(self):
+        """Disconnect from Arduino."""
+        if self.connection and self.connection.is_open:
+            self.connection.close()
+            self.is_connected = False
+            logger.info("Arduino disconnected")
+    
+    def _start_communication_threads(self):
+        """Start background threads for communication."""
+        # Command processing thread
+        self.command_thread = threading.Thread(target=self._process_commands, daemon=True)
+        self.command_thread.start()
+        
+        # Response monitoring thread
+        self.response_thread = threading.Thread(target=self._monitor_responses, daemon=True)
+        self.response_thread.start()
+    
+    def _process_commands(self):
+        """Background thread to process queued commands."""
+        while self.is_connected:
+            try:
+                if self.command_queue:
+                    with self.lock:
+                        command = self.command_queue.pop(0)
+                    
+                    self._execute_command(command)
+                    
+                time.sleep(0.1)  # Small delay to prevent busy waiting
+                
+            except Exception as e:
+                logger.error(f"Error in command processing: {e}")
+                time.sleep(1)
+    
+    def _monitor_responses(self):
+        """Background thread to monitor Arduino responses."""
+        while self.is_connected:
+            try:
+                response = self.read_response()
+                if response:
+                    self._handle_response(response)
+                    
+                time.sleep(0.1)
+                
+            except Exception as e:
+                logger.error(f"Error in response monitoring: {e}")
+                time.sleep(1)
+    
+    def send_command(self, command: str) -> bool:
+        """Send command to Arduino (async)."""
+        if not self.is_connected:
+            logger.error("Not connected to Arduino")
+            return False
+        
+        try:
+            with self.lock:
+                self.command_queue.append(command)
+            
+            logger.debug(f"Command queued: {command}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error queuing command: {e}")
+            return False
+    
+    def read_response(self, timeout: float = 2.0) -> Optional[str]:
+        """Read response from Arduino (blocking)."""
+        if not self.connection or not self.connection.is_open:
+            return None
+        
+        try:
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                if self.connection.in_waiting > 0:
+                    response = self.connection.readline().decode().strip()
+                    return response
+                time.sleep(0.01)
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error reading response: {e}")
+            return None
+    
+    def _execute_command(self, command: str):
+        """Execute a specific command."""
+        try:
+            # Parse command
+            parts = command.split(',')
+            cmd_type = parts[0]
+            
+            # Update robot state
+            self.robot_state['last_command'] = command
+            self.robot_state['status'] = 'processing'
+            
+            # Send to Arduino
+            self.connection.write(f"{command}\n".encode())
+            logger.info(f"Executing command: {command}")
+            
+            # Handle command if we have a handler
+            if cmd_type in self.command_handlers:
+                self.command_handlers[cmd_type](parts[1:] if len(parts) > 1 else [])
+            
+        except Exception as e:
+            logger.error(f"Error executing command {command}: {e}")
+            self.robot_state['error_count'] += 1
+            self.robot_state['status'] = 'error'
+    
+    def _handle_response(self, response: str):
+        """Handle Arduino response."""
+        try:
+            self.robot_state['last_response'] = response
+            self.robot_state['status'] = 'idle'
+            
+            # Parse response
+            if response.startswith('POSITION:'):
+                # Update position
+                coords = response.split(':')[1].split(',')
+                self.robot_state['position'] = {
+                    'x': float(coords[0]),
+                    'y': float(coords[1]),
+                    'z': float(coords[2])
+                }
+            elif response.startswith('ERROR:'):
+                # Handle error
+                error_msg = response.split(':', 1)[1]
+                logger.error(f"Arduino error: {error_msg}")
+                self.robot_state['error_count'] += 1
+            
+            logger.debug(f"Arduino response: {response}")
+            
+        except Exception as e:
+            logger.error(f"Error handling response: {e}")
+    
+    def _handle_ping(self, args):
+        """Handle PING command."""
+        # PING doesn't need additional processing
+        pass
+    
+    def _handle_pick(self, args):
+        """Handle PICK command."""
+        if len(args) >= 3:
+            x, y, z = map(float, args[:3])
+            logger.info(f"Executing pick at position ({x}, {y}, {z})")
+            
+            # Simulate pick sequence (in real implementation, this would control servos)
+            time.sleep(2)  # Simulate pick time
+            
+            # Send completion response
+            self.connection.write("PICK_DONE\n".encode())
+    
+    def _handle_move(self, args):
+        """Handle MOVE command."""
+        if len(args) >= 3:
+            x, y, z = map(float, args[:3])
+            logger.info(f"Moving to position ({x}, {y}, {z})")
+            
+            # Update position
+            self.robot_state['position'] = {'x': x, 'y': y, 'z': z}
+            
+            # Send position update
+            self.connection.write(f"POSITION:{x},{y},{z}\n".encode())
+    
+    def _handle_home(self, args):
+        """Handle HOME command."""
+        logger.info("Moving to home position")
+        
+        # Move to home position (0, 0, 100)
+        self.robot_state['position'] = {'x': 0, 'y': 0, 'z': 100}
+        
+        # Send position update
+        self.connection.write("POSITION:0,0,100\n".encode())
+    
+    def _handle_status(self, args):
+        """Handle STATUS command."""
+        status_data = json.dumps(self.robot_state)
+        self.connection.write(f"STATUS:{status_data}\n".encode())
+    
+    def _handle_reset(self, args):
+        """Handle RESET command."""
+        logger.info("Resetting robot state")
+        
+        self.robot_state = {
+            'position': {'x': 0, 'y': 0, 'z': 0},
+            'status': 'idle',
+            'last_command': None,
+            'last_response': None,
+            'error_count': 0,
+            'uptime': 0
+        }
+        
+        self.connection.write("RESET_DONE\n".encode())
+    
+    def get_status(self) -> Dict[str, Any]:
+        """Get current robot status."""
+        return self.robot_state.copy()
+    
+    def wait_for_completion(self, timeout: float = 30.0) -> bool:
+        """Wait for current command to complete."""
+        start_time = time.time()
+        
+        while time.time() - start_time < timeout:
+            if self.robot_state['status'] == 'idle':
+                return True
+            time.sleep(0.1)
+        
+        logger.warning("Command timeout")
+        return False
+    
+    def emergency_stop(self):
+        """Emergency stop - immediately halt all movement."""
+        logger.warning("EMERGENCY STOP ACTIVATED")
+        self.send_command("ESTOP")
+        self.robot_state['status'] = 'emergency_stop'
+
+def test_arduino_bridge():
+    """Test the Arduino bridge functionality."""
+    bridge = ArduinoBridge()
+    
+    try:
+        if bridge.connect():
+            print("Arduino bridge test successful!")
+            
+            # Test basic commands
+            bridge.send_command("STATUS")
+            time.sleep(1)
+            
+            bridge.send_command("HOME")
+            bridge.wait_for_completion()
+            
+            bridge.send_command("MOVE,100,50,80")
+            bridge.wait_for_completion()
+            
+            # Print final status
+            status = bridge.get_status()
+            print(f"Final status: {json.dumps(status, indent=2)}")
+            
+        else:
+            print("Failed to connect to Arduino")
+            
+    except KeyboardInterrupt:
+        print("Test interrupted")
+    finally:
+        bridge.disconnect()
+
+if __name__ == "__main__":
+    test_arduino_bridge()

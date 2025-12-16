@@ -19,8 +19,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVO_WRIST 3
 #define SERVO_SCISSOR 4
 
-float currentAngles[5] = {90, 95, 80, 90, 180};
-float targetAngles[5]  = {90, 95, 80, 90, 180};
+float currentAngles[5] = {90, 125, 110, 120, 180};
+float targetAngles[5]  = {90, 125, 110, 120, 180};
 
 int angleToPulse(float angle) {
   return map((int)angle, 0, 180, SERVOMIN, SERVOMAX);
@@ -43,6 +43,30 @@ void computeForwardKinematics(float theta0, float theta1, float theta2,
   y = y_arm * sin(t0);
   z = z_arm;
 }
+float computeWristAngle(float theta1, float theta2, float targetZ)
+{
+  float L1_Z = L1 * fabs(sin(theta1 * PI / 180.0));
+  float wristDiffAngle = fabs(theta2 - ((theta2 - 90) * 2) - theta1);
+  float Wrist_Y = L3 + L2 * cos(wristDiffAngle * PI / 180.0);
+  float Wrist_Z = L2 * sin(wristDiffAngle * PI / 180.0);
+
+  if (Wrist_Z == 0.0f)
+    return 90.0f;
+
+  float Wrist_ZY = sqrt(Wrist_Y * Wrist_Y + Wrist_Z * Wrist_Z);
+  float wristtrig = (L3 * L3 + L2 * L2 - Wrist_ZY * Wrist_ZY) / (2 * L3 * L2);
+  wristtrig = constrain(wristtrig, -1, 1);
+  float wristtrig_angle = acos(wristtrig);
+
+  float theta3_before = (wristtrig_angle - PI / 2) * 180.0 / PI;
+
+  if (L1_Z <= targetZ)
+    return theta3_before;
+
+  return theta3_before - ((theta3_before - 90) * 2);
+}
+
+
 
 // ======================================================
 // INVERSE KINEMATICS (MATCHES YOUR FK EXACTLY)
@@ -146,9 +170,9 @@ bool computeInverseKinematics(float x, float y, float z,
 // ======================================================
 // Smooth move
 // ======================================================
-void moveToTargetAngles() {
-  float step = 0.125;
-  int delayTime = 0.25;
+void moveToTargetAngles(float step, int delayTime) {
+  // float step = 0.125;
+  // int delayTime = 0.25;
 
   float maxChange = 0;
   for (int i = 0; i < 5; i++) {
@@ -173,7 +197,15 @@ void moveToTargetAngles() {
 
 void moveScissorOnce(float angle) {
   targetAngles[SERVO_SCISSOR] = angle;
-  moveToTargetAngles();
+  moveToTargetAngles(4, 0.01);
+  //moveToTargetAngles(step, delayTime);
+  //delay time means time between movements
+  //step means how smooth the movement is
+}
+
+void moveScissorSecond(float angle) {
+  targetAngles[SERVO_SCISSOR] = angle;
+  moveToTargetAngles(0.125, 0.25);
 }
 
 // ======================================================
@@ -238,7 +270,27 @@ void loop() {
     targetAngles[SERVO_ELBOW]    = t2 - ((t2 - 90) * 2) - 10;
     targetAngles[SERVO_WRIST]    = t3 - ((t3 - 90) * 2);
 
-    moveToTargetAngles();
+    // Move arm first
+    moveToTargetAngles(0.125, 0.25);
+
+    delay(3000); 
+
+    // Then move scissor
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
+    delay(500);
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
+    delay(500);
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
+    delay(500);
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
 
     // FK check of the IK actual angles 
     float base_math   = currentAngles[SERVO_BASE];
@@ -282,13 +334,35 @@ void loop() {
     float t1 = input.substring(s1 + 1, s2).toFloat();
     float t2 = input.substring(s2 + 1).toFloat();
 
+    float t3 = computeWristAngle(t1, t2, 0.0f);
+
     // Direct servo movement with offsets
     targetAngles[SERVO_BASE]     = t0;
     targetAngles[SERVO_SHOULDER] = t1 + 5;
     targetAngles[SERVO_ELBOW]    = t2 - 10;
-    targetAngles[SERVO_WRIST]    = t2;
+    targetAngles[SERVO_WRIST]    = t3;
 
-    moveToTargetAngles();
+    // Move arm first
+    moveToTargetAngles(0.125, 0.25);
+
+    delay(3000);
+
+    // Then move scissor
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
+    delay(500);
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
+    delay(500);
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
+    delay(500);
+    moveScissorOnce(70);
+    delay(500);
+    moveScissorSecond(120);
 
     float fx, fy, fz;
     computeForwardKinematics(t0, t1, t2, fx, fy, fz);
@@ -311,6 +385,18 @@ void loop() {
     Serial.println(fz);
     Serial.println("=================");
     Serial.println(" ");
+  }
+
+  else if (input.startsWith("r")) {
+    Serial.println("Commands:");
+    Serial.println("I x y z");
+    Serial.println("F t0 t1 t2");
+  }
+
+  else if (input.startsWith("9")) {
+    Serial.println("Commands:");
+    Serial.println("I x y z");
+    Serial.println("F t0 t1 t2");
   }
 
   else {

@@ -1,0 +1,10 @@
+run_id,experiment_name,model_size,model_architecture,dataset_name,num_classes,val_precision,val_recall,val_map50,val_map50_95,status,best_epoch,training_time_minutes,notes
+run_20251125_150400_manual_baseline,Baseline_YOLOv8n,n,YOLOv8,straw-detect.v1-straw-detect.yolov8,1,0.916,0.855,0.937,0.581,completed,50,4.3,
+run_20251202_210737_yolov8s_enhanced,yolov8s_enhanced,s,YOLOv8,straw-detect.v1-straw-detect.yolov8,1,0.392,0.415,0.378,0.342,completed,100,,
+run_20251202_210739_yolov8n,yolov8n,n,YOLOv8,straw-detect.v1-straw-detect.yolov8,1,0.392,0.415,0.378,0.342,completed,100,,
+run_20251202_210740_baseline,baseline,n,YOLOv8,straw-detect.v1-straw-detect.yolov8,1,0.392,0.415,0.378,0.342,completed,100,,
+run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433,yolov8s_improved_detection_v2_20251202_153433,s,YOLOv8,straw-detect.v1-straw-detect.yolov8,1,0.392,0.415,0.378,0.342,completed,100,,
+kaggle_yolov8n_20251125_150400,,n,YOLOv8,,1,0.916,0.855,0.937,0.891,published,,,"Best performing model from Kaggle competition, highest mAP@50."
+kaggle_strawberry_yolov8n_20251204_115538,kaggle_strawberry_yolov8n_20251204_115538,n,YOLOv8,strawberry_kaggle,1,0.95526,0.96185,0.98927,,completed,50,,
+kaggle_strawberry_yolov8s_20251204_2105262,kaggle_strawberry_yolov8s_20251204_2105262,s,YOLOv8,strawberry_kaggle,1,0.96116,0.93694,0.9762,,completed,150,,
+optimized_yolov8n_20251204_154529,optimized_yolov8n_20251204_154529,n,YOLOv8,strawberry_kaggle,1,0.95663,0.95495,0.9837,,completed,100,,

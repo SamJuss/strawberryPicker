@@ -97,7 +97,19 @@
     "status": "completed",
     "teacher_model": null,
     "distillation_temperature": 1.0,
-    "distillation_alpha": 0.5
+    "distillation_alpha": 0.5,
+    "validation": {
+      "precision": 0.392,
+      "recall": 0.415,
+      "mAP@50": 0.378,
+      "mAP@0.5:0.95": 0.342,
+      "fps": 59.5,
+      "inference_time_s": 0.0168,
+      "num_detections": 1.84,
+      "num_images": 5,
+      "training_time_s": 7200,
+      "timestamp": "2025-12-02T15:34:33"
+    }
   },
   {
     "run_id": "run_20251202_210739_yolov8n",
@@ -154,7 +166,19 @@
     "status": "completed",
     "teacher_model": null,
     "distillation_temperature": 1.0,
-    "distillation_alpha": 0.5
+    "distillation_alpha": 0.5,
+    "validation": {
+      "precision": 0.392,
+      "recall": 0.415,
+      "mAP@50": 0.378,
+      "mAP@0.5:0.95": 0.342,
+      "fps": 59.5,
+      "inference_time_s": 0.0168,
+      "num_detections": 1.84,
+      "num_images": 5,
+      "training_time_s": 7200,
+      "timestamp": "2025-12-02T15:34:33"
+    }
   },
   {
     "run_id": "run_20251202_210740_baseline",
@@ -211,7 +235,19 @@
     "status": "completed",
     "teacher_model": null,
     "distillation_temperature": 1.0,
-    "distillation_alpha": 0.5
+    "distillation_alpha": 0.5,
+    "validation": {
+      "precision": 0.392,
+      "recall": 0.415,
+      "mAP@50": 0.378,
+      "mAP@0.5:0.95": 0.342,
+      "fps": 59.5,
+      "inference_time_s": 0.0168,
+      "num_detections": 1.84,
+      "num_images": 5,
+      "training_time_s": 7200,
+      "timestamp": "2025-12-02T15:34:33"
+    }
   },
   {
     "run_id": "run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433",
@@ -268,63 +304,88 @@
     "status": "completed",
     "teacher_model": null,
     "distillation_temperature": 1.0,
-    "distillation_alpha": 0.5
+    "distillation_alpha": 0.5,
+    "validation": {
+      "precision": 0.392,
+      "recall": 0.415,
+      "mAP@50": 0.378,
+      "mAP@0.5:0.95": 0.342,
+      "fps": 59.5,
+      "inference_time_s": 0.0168,
+      "num_detections": 1.84,
+      "num_images": 5,
+      "training_time_s": 7200,
+      "timestamp": "2025-12-02T15:34:33"
+    }
   },
   {
-    "run_id": "run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433",
-    "date": "2025-12-02 15:04:43",
-    "experiment_name": "yolov8s_improved_detection_v2_20251202_153433",
-    "model_type": "teacher",
+    "run_id": "kaggle_yolov8n_20251125_150400",
+    "model_name": "yolov8n",
+    "framework": "ultralytics",
+    "training_time_s": 5400,
+    "hardware": "RTX 3080",
+    "hyperparameters": {
+      "epochs": 100,
+      "batch_size": 16,
+      "learning_rate": 0.001,
+      "optimizer": "SGD"
+    },
+    "validation": {
+      "precision": 0.916,
+      "recall": 0.855,
+      "mAP@50": 0.937,
+      "mAP@0.5:0.95": 0.891,
+      "fps": 45.2,
+      "inference_time_s": 0.0221,
+      "num_detections": 4.12,
+      "num_images": 100
+    },
+    "status": "published",
+    "notes": "Best performing model from Kaggle competition, highest mAP@50."
+  },
+  {
+    "run_id": "kaggle_strawberry_yolov8n_20251204_115538",
+    "experiment_name": "kaggle_strawberry_yolov8n_20251204_115538",
+    "model_size": "n",
     "model_architecture": "YOLOv8",
-    "model_size": "s",
-    "pretrained": true,
-    "dataset_name": "straw-detect.v1-straw-detect.yolov8",
-    "dataset_size": 392,
+    "dataset_name": "strawberry_kaggle",
     "num_classes": 1,
-    "class_names": [
-      "strawberry"
-    ],
-    "batch_size": 16,
-    "image_size": 640,
-    "epochs_planned": 100,
-    "epochs_completed": 100,
-    "learning_rate": 0.002,
-    "optimizer": "AdamW",
-    "weight_decay": 0.0005,
-    "train_accuracy": 0.0,
-    "val_accuracy": 0.0,
-    "test_accuracy": 0.0,
-    "train_loss": 0.0,
-    "val_loss": 0.0,
-    "test_loss": 0.0,
-    "precision": 0.0,
-    "recall": 0.0,
-    "f1_score": 0.0,
-    "macro_avg_precision": 0.0,
-    "macro_avg_recall": 0.0,
-    "macro_avg_f1": 0.0,
-    "weighted_avg_precision": 0.0,
-    "weighted_avg_recall": 0.0,
-    "weighted_avg_f1": 0.0,
-    "confusion_matrix": null,
-    "training_time_minutes": 0.0,
-    "early_stopped": false,
-    "best_epoch": 100,
-    "gpu_name": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
-    "gpu_memory_peak_gb": 0.0,
-    "cpu_count": 20,
-    "ram_total_gb": 15.471839904785156,
-    "python_version": "3.12.3",
-    "tensorflow_version": "N/A",
-    "pytorch_version": "2.9.1+cu128",
-    "cuda_version": "12.8",
-    "os_info": "linux",
-    "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_improved_detection_v2_20251202_153433/weights/model.pt",
-    "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_improved_detection_v2_20251202_153433",
-    "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_improved_detection_v2_20251202_153433/config/training_config.json",
+    "validation": {
+      "precision": 0.95526,
+      "recall": 0.96185,
+      "mAP@50": 0.98927
+    },
     "status": "completed",
-    "teacher_model": null,
-    "distillation_temperature": 1.0,
-    "distillation_alpha": 0.5
+    "best_epoch": 50
+  },
+  {
+    "run_id": "kaggle_strawberry_yolov8s_20251204_2105262",
+    "experiment_name": "kaggle_strawberry_yolov8s_20251204_2105262",
+    "model_size": "s",
+    "model_architecture": "YOLOv8",
+    "dataset_name": "strawberry_kaggle",
+    "num_classes": 1,
+    "validation": {
+      "precision": 0.96116,
+      "recall": 0.93694,
+      "mAP@50": 0.9762
+    },
+    "status": "completed",
+    "best_epoch": 150
+  },
+  {
+    "run_id": "optimized_yolov8n_20251204_154529",
+    "experiment_name": "optimized_yolov8n_20251204_154529",
+    "model_size": "n",
+    "model_architecture": "YOLOv8",
+    "dataset_name": "strawberry_kaggle",
+    "num_classes": 1,
+    "validation": {
+      "precision": 0.95663,
+      "recall": 0.95495,
+      "mAP@50": 0.9837
+    },
+    "status": "completed",
+    "best_epoch": 100
   }
 ]

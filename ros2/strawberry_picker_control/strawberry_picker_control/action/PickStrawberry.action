@@ -1,0 +1,14 @@
+# Action for coordinated strawberry picking
+StrawberryTarget target
+
+---
+# Result
+bool success
+string message
+geometry_msgs/Pose final_pose
+
+---
+# Feedback
+string status  # "moving_to_target", "gripping", "lifting", "placing"
+float32 progress  # 0.0 to 1.0
+geometry_msgs/Pose current_pose

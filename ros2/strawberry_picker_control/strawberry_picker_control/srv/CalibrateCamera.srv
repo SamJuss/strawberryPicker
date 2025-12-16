@@ -1,0 +1,10 @@
+# Service to trigger camera calibration
+string calibration_pattern  # "checkerboard", "charuco", "circles"
+uint32 pattern_width
+uint32 pattern_height
+float32 square_size
+
+---
+bool success
+string message
+string calibration_file_path

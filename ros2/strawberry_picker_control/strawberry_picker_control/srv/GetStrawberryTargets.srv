@@ -1,0 +1,7 @@
+# Service to get current strawberry picking targets
+---
+
+# Response with current targets
+StrawberryTarget[] targets
+bool success
+string message

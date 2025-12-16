@@ -1,0 +1,49 @@
+# Default configuration for Strawberry Picker ROS2 system
+
+# Vision processing parameters
+vision_processor:
+  detection_model_path: "model/weights/best.pt"
+  classification_model_path: "model/ripeness_classifier.h5"
+  confidence_threshold: 0.5
+  camera_topic: "/camera/image_raw"
+  publish_rate: 10.0
+
+# Coordinate transformation parameters
+coordinate_transformer:
+  camera_matrix_file: "calibration/camera_matrix.npy"
+  distortion_coeffs_file: "calibration/distortion_coeffs.npy"
+  stereo_calibration_file: "calibration/stereo_calibration.npz"
+  robot_base_frame: "base_link"
+  camera_frame: "camera_link"
+  calibration_samples: 20
+
+# Arduino bridge parameters
+arduino_bridge:
+  port: "/dev/ttyUSB0"
+  baudrate: 115200
+  timeout: 1.0
+  max_retries: 3
+
+# Robot control parameters
+robot_controller:
+  planning_group: "arm"
+  end_effector_link: "gripper_link"
+  home_position: [0.0, 0.0, 0.3, 0.0, 1.57, 0.0]
+  picking_height_offset: 0.05
+  approach_velocity: 0.1
+  picking_velocity: 0.05
+
+# Picking coordinator parameters
+picking_coordinator:
+  max_targets_per_cycle: 3
+  picking_timeout: 30.0
+  success_threshold: 0.8
+  retry_attempts: 2
+  collection_position: [0.3, 0.0, 0.2]
+
+# System parameters
+system:
+  use_simulation: false
+  enable_diagnostics: true
+  log_level: "INFO"
+  update_rate: 10.0

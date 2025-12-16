@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🍓 StrawberryPicker - AI-Powered Robotic Harvesting System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -72,10 +73,103 @@ strawberryPicker/
 ```bash
 # Clone repository
 git clone https://huggingface.co/theonegareth/strawberryPicker
+=======
+---
+language: en
+license: mit
+tags:
+- computer-vision
+- object-detection
+- image-classification
+- agriculture
+- robotics
+- strawberry
+- ripeness-detection
+- yolov11
+- efficientnet
+- pytorch
+datasets:
+- custom
+metrics:
+- accuracy
+- precision
+- recall
+- f1-score
+- mAP50
+pipeline_tag: object-detection
+inference: true
+---
+
+# 🍓 Strawberry Picker AI System
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Accuracy-91.71%25-brightgreen" alt="Accuracy">
+  <img src="https://img.shields.io/badge/Model-YOLOv11n%20%2B%20EfficientNet-blue" alt="Model Type">
+  <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License">
+  <img src="https://img.shields.io/badge/Python-3.8%2B-blue" alt="Python">
+  <img src="https://img.shields.io/badge/PyTorch-2.0%2B-orange" alt="PyTorch">
+</div>
+
+## 🎯 Overview
+
+A complete AI-powered strawberry picking system that combines **object detection** and **ripeness classification** to identify and pick only ripe strawberries. This two-stage pipeline achieves **91.71% accuracy** in ripeness classification while maintaining real-time performance suitable for robotic harvesting applications.
+
+**Repository**: [https://huggingface.co/theonegareth/strawberryPicker](https://huggingface.co/theonegareth/strawberryPicker)  
+**GitHub**: [https://github.com/theonegareth/strawberryPicker](https://github.com/theonegareth/strawberryPicker)
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    A[Input Image] --> B[YOLOv11n Detector]
+    B --> C{Detected Strawberries}
+    C --> D[Crop & Resize]
+    D --> E[EfficientNet-B0 Classifier]
+    E --> F{Ripeness Prediction}
+    F --> G[Decision: Pick Only Ripe]
+    
+    style A fill:#f9f9f9
+    style B fill:#e3f2fd
+    style E fill:#fff3e0
+    style G fill:#c8e6c9
+```
+
+### **Two-Stage Pipeline:**
+
+1. **Detection Stage**: YOLOv11n model identifies and locates strawberries in images
+2. **Classification Stage**: EfficientNet-B0 classifies each detected strawberry into 4 ripeness categories
+3. **Decision Stage**: System recommends picking only ripe strawberries
+
+## 📊 Model Overview
+
+### Two-Stage Picking System
+
+| Component | Model | Architecture | Performance | Size | Purpose |
+|-----------|-------|--------------|-------------|------|---------|
+| [Detection](detection/) | YOLOv11n | Object Detection | mAP@50: 84.0% | 5.2MB | Locate strawberries |
+| [Classification](classification/) | EfficientNet-B0 | Image Classification | Accuracy: 91.71% | 56MB | Classify ripeness |
+
+### Additional Detection Models
+
+| Model | Architecture | Performance | Size | Best For |
+|-------|--------------|-------------|------|----------|
+| [YOLOv8n](yolov8n/) | YOLOv8 Nano | mAP@50: 98.9% | 5.7MB | Edge deployment, real-time |
+| [YOLOv8s](yolov8s/) | YOLOv8 Small | mAP@50: 93.7% | 21MB | Higher accuracy applications |
+| [YOLOv11n](yolov11n/) | YOLOv11 Nano | Testing | 10.4MB | Latest architecture testing |
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/theonegareth/strawberryPicker.git
+>>>>>>> bb77661e9aecb09169fb60057ff0ebb1f504de58
 cd strawberryPicker
 
 # Install dependencies
 pip install -r requirements.txt
+<<<<<<< HEAD
 
 # Validate setup
 python scripts/setup_training.py --validate-only
@@ -251,12 +345,207 @@ robot:
 - Update documentation for API changes
 - Ensure compatibility with Raspberry Pi deployment
 
+=======
+```
+
+**Requirements:**
+- Python 3.8+
+- PyTorch 1.8+
+- torchvision 0.9+
+- OpenCV 4.5+
+- Pillow 8.0+
+- ultralytics 8.0+
+- huggingface_hub
+
+### Download Models from HuggingFace
+
+```python
+from huggingface_hub import hf_hub_download
+
+# Download detection model
+detector_path = hf_hub_download(
+    repo_id="theonegareth/strawberryPicker",
+    filename="detection/best.pt"
+)
+
+# Download classification model
+classifier_path = hf_hub_download(
+    repo_id="theonegareth/strawberryPicker",
+    filename="classification/best_enhanced_classifier.pth"
+)
+
+print(f"Models downloaded to:\n- {detector_path}\n- {classifier_path}")
+```
+
+### Basic Usage Example
+
+```python
+import torch
+import cv2
+from PIL import Image
+from torchvision import transforms
+import numpy as np
+
+# Load detection model
+detector = torch.hub.load('ultralytics/yolov8', 'custom', path=detector_path)
+
+# Load classification model
+classifier = torch.load(classifier_path, map_location='cpu')
+classifier.eval()
+
+# Preprocessing for classifier
+transform = transforms.Compose([
+    transforms.Resize((128, 128)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], 
+                        std=[0.229, 0.224, 0.225])
+])
+
+# Process image
+def detect_and_classify(image_path):
+    """
+    Detect strawberries and classify their ripeness
+    
+    Args:
+        image_path: Path to input image
+        
+    Returns:
+        results: List of dicts with bbox, ripeness, confidence
+    """
+    # Load image
+    image = cv2.imread(image_path)
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    
+    # Detect strawberries
+    detection_results = detector(image_rgb)
+    
+    results = []
+    for result in detection_results:
+        boxes = result.boxes.xyxy.cpu().numpy()
+        confidences = result.boxes.conf.cpu().numpy()
+        class_ids = result.boxes.cls.cpu().numpy()
+        
+        for box, conf, cls_id in zip(boxes, confidences, class_ids):
+            if conf < 0.5:  # Filter low confidence detections
+                continue
+                
+            x1, y1, x2, y2 = map(int, box)
+            
+            # Crop strawberry
+            crop = image_rgb[y1:y2, x1:x2]
+            if crop.size == 0:
+                continue
+            
+            # Classify ripeness
+            crop_pil = Image.fromarray(crop)
+            input_tensor = transform(crop_pil).unsqueeze(0)
+            
+            with torch.no_grad():
+                output = classifier(input_tensor)
+                probabilities = torch.softmax(output, dim=1)
+                predicted_class = torch.argmax(probabilities, dim=1).item()
+                confidence = probabilities[0][predicted_class].item()
+            
+            # Ripeness classes
+            classes = ['unripe', 'partially-ripe', 'ripe', 'overripe']
+            
+            results.append({
+                'bbox': (x1, y1, x2, y2),
+                'ripeness': classes[predicted_class],
+                'confidence': confidence,
+                'detection_confidence': float(conf),
+                'detection_class': int(cls_id)
+            })
+    
+    return results
+
+# Example usage
+if __name__ == "__main__":
+    image_path = "strawberries.jpg"
+    results = detect_and_classify(image_path)
+    
+    print(f"Detected {len(results)} strawberries:")
+    for i, result in enumerate(results, 1):
+        print(f"  {i}. Ripeness: {result['ripeness']} "
+              f"(conf: {result['confidence']:.2f})")
+```
+
+## 📁 Repository Structure
+
+```
+strawberryPicker/
+├── detection/              # YOLOv11n detection model (Two-stage system)
+│   ├── best.pt            # PyTorch weights
+│   └── README.md          # Model documentation
+├── classification/         # EfficientNet-B0 classification model (Two-stage system)
+│   ├── best_enhanced_classifier.pth  # PyTorch weights
+│   ├── training_summary.md
+│   └── README.md          # Model documentation
+├── yolov8n/               # YOLOv8 Nano model (98.9% mAP@50)
+│   ├── best.pt            # PyTorch weights
+│   ├── best.onnx          # ONNX format
+│   ├── best_fp16.onnx     # FP16 ONNX for edge deployment
+│   └── README.md          # Model documentation
+├── yolov8s/               # YOLOv8 Small model (93.7% mAP@50)
+│   ├── best.pt            # PyTorch weights
+│   ├── strawberry_yolov8s_enhanced.pt  # Enhanced version
+│   └── README.md          # Model documentation
+├── yolov11n/              # YOLOv11 Nano model (Testing)
+│   ├── strawberry_yolov11n.pt  # PyTorch weights
+│   ├── strawberry_yolov11n.onnx  # ONNX format
+│   └── README.md          # Model documentation
+├── scripts/                # Optimization scripts
+├── benchmark_results/      # Performance benchmarks
+├── results/                # Training results/plots
+├── LICENSE                 # MIT license
+├── CITATION.cff           # Academic citation
+├── sync_to_huggingface.py # Automation script
+├── requirements.txt       # Python dependencies
+├── inference_example.py   # Basic inference script
+├── webcam_inference.py    # Real-time webcam demo
+└── README.md             # This file
+```
+
+## 🎯 Use Cases
+
+### **1. Automated Harvesting**
+Integrate with robotic arms for autonomous strawberry picking:
+```python
+# Pseudo-code for robotics integration
+for strawberry in detected_strawberries:
+    if strawberry.ripeness == 'ripe':
+        robot_arm.move_to(strawberry.position)
+        robot_arm.pick()
+```
+
+### **2. Quality Control in Packaging**
+Sort strawberries by ripeness in processing facilities:
+```python
+# Conveyor belt sorting
+if ripeness == 'ripe':
+    conveyor.route_to('premium_package')
+elif ripeness == 'partially-ripe':
+    conveyor.route_to('delayed_shipping')
+else:
+    conveyor.route_to('rejection_bin')
+```
+
+### **3. Agricultural Research**
+Study ripening patterns and optimize harvest timing:
+```python
+# Track ripeness distribution over time
+daily_ripeness_counts = analyze_temporal_ripeness(images_over_time)
+optimal_harvest_day = find_peak_ripe_day(daily_ripeness_counts)
+```
+
+>>>>>>> bb77661e9aecb09169fb60057ff0ebb1f504de58
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
+<<<<<<< HEAD
 - **Ultralytics** - YOLOv8 framework and documentation
 - **Roboflow** - Dataset management and annotation tools
 - **Arduino Community** - Open-source hardware ecosystem
@@ -298,3 +587,29 @@ For questions and support:
 **Built with ❤️ for sustainable agriculture and precision farming**
 
 *StrawberryPicker - Where AI meets Agriculture*
+=======
+- **YOLOv11**: Ultralytics for the state-of-the-art detection model
+- **EfficientNet**: Google AI for the efficient classification architecture
+- **PyTorch Team**: For the excellent deep learning framework
+
+## 📚 Citation
+
+If you use this model in your research, please cite:
+
+```bibtex
+@misc{strawberryPicker2024,
+  title={Strawberry Picker AI System: A Two-Stage Approach for Automated Harvesting},
+  author={The One Gareth},
+  year={2024},
+  publisher={HuggingFace},
+  url={https://huggingface.co/theonegareth/strawberryPicker}
+}
+```
+
+---
+
+<div align="center">
+  <h3>🚀 Ready to revolutionize strawberry harvesting!</h3>
+  <p>This AI system will help you harvest only the ripest, most delicious strawberries with precision and efficiency.</p>
+</div>
+>>>>>>> bb77661e9aecb09169fb60057ff0ebb1f504de58

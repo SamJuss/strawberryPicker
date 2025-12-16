@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 torch>=1.8.0
 torchvision>=0.9.0
 ultralytics>=8.0.0
@@ -10,3 +11,10 @@ tensorboard>=2.7.0
 onnx>=1.10.0
 onnxruntime>=1.10.0
 tensorflow>=2.8.0
+=======
+ultralytics>=8.0.0
+opencv-python>=4.5.0
+numpy>=1.21.0
+torch>=1.8.0
+torchvision>=0.9.0
+>>>>>>> bb77661e9aecb09169fb60057ff0ebb1f504de58

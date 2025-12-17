@@ -46,7 +46,7 @@ def test_model(model_path, image_path, save_output=True):
     
     # Save or display result
     if save_output:
-        output_path = Path("test_output.jpg")
+        output_path = Path(__file__).parent.parent / "test_outputs" / "test_output.jpg"
         result.save(str(output_path))
         print(f"\nOutput saved to: {output_path}")
         print(f"Image with bounding boxes saved successfully!")

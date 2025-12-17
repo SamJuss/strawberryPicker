@@ -263,8 +263,8 @@ def benchmark_model(model_path: str, test_image_path: str, runs: int = 10) -> di
 
 if __name__ == "__main__":
     # Example usage
-    model_path = "model/detection/yolov8n/best_416.onnx"
-    test_image = "test_detection_result.jpg"
+    model_path = "models/detection/yolov8n/best_416.onnx"
+    test_image = "test_outputs/test_detection_result.jpg"
 
     if os.path.exists(model_path) and os.path.exists(test_image):
         print("🚀 Testing Optimized ONNX Inference")
@@ -277,13 +277,21 @@ if __name__ == "__main__":
         image = cv2.imread(test_image)
         detections, inference_time = model.predict(image)
 
-        print(".2f"        print(f"📊 Detections found: {len(detections)}")
+        print(f"⏱️  Inference time: {inference_time:.2f} seconds")
+        print(f"📊 Detections found: {len(detections)}")
 
         # Benchmark
         print("\n📈 Running benchmark (10 runs)...")
         results = benchmark_model(model_path, test_image, runs=10)
 
-        print("📊 Benchmark Results:"        print(".2f"        print(".2f"        print(".2f"        print(".2f"        print(".2f"        print(".1f"
+        print("📊 Benchmark Results:")
+        print(f"  Mean inference time: {results['mean_ms']:.2f} ms")
+        print(f"  Median inference time: {results['median_ms']:.2f} ms")
+        print(f"  Standard deviation: {results['std_ms']:.2f} ms")
+        print(f"  Min inference time: {results['min_ms']:.2f} ms")
+        print(f"  Max inference time: {results['max_ms']:.2f} ms")
+        print(f"  Throughput: {results['fps']:.1f} FPS")
+        print(f"  Runs: {results['runs']}")
         print("\n✅ Optimized inference test complete!")
     else:
         print("❌ Model or test image not found")

@@ -36,37 +36,17 @@ void computeForwardKinematics(float theta0, float theta1, float theta2,
   float t1 = theta1 * PI / 180.0;
   float t2 = (theta2 - theta1) * PI / 180.0;
 
+  float base_offset = 1.4;
+  float base_offset_x = base_offset * cos(t0);
+  float base_offset_y = base_offset * sin(t0);
+
   float y_arm = L1 * cos(t1) + L2 * cos(t2) + L3;
   float z_arm = L1 * sin(t1) - L2 * sin(t2);
 
-  x = y_arm * cos(t0);
-  y = y_arm * sin(t0);
+  x = y_arm * cos(t0) + base_offset_x;
+  y = y_arm * sin(t0) + base_offset_y;
   z = z_arm;
 }
-float computeWristAngle(float theta1, float theta2, float targetZ)
-{
-  float L1_Z = L1 * fabs(sin(theta1 * PI / 180.0));
-  float wristDiffAngle = fabs(theta2 - ((theta2 - 90) * 2) - theta1);
-  float Wrist_Y = L3 + L2 * cos(wristDiffAngle * PI / 180.0);
-  float Wrist_Z = L2 * sin(wristDiffAngle * PI / 180.0);
-
-  if (Wrist_Z == 0.0f)
-    return 90.0f;
-
-  float Wrist_ZY = sqrt(Wrist_Y * Wrist_Y + Wrist_Z * Wrist_Z);
-  float wristtrig = (L3 * L3 + L2 * L2 - Wrist_ZY * Wrist_ZY) / (2 * L3 * L2);
-  wristtrig = constrain(wristtrig, -1, 1);
-  float wristtrig_angle = acos(wristtrig);
-
-  float theta3_before = (wristtrig_angle - PI / 2) * 180.0 / PI;
-
-  if (L1_Z <= targetZ)
-    return theta3_before;
-
-  return theta3_before - ((theta3_before - 90) * 2);
-}
-
-
 
 // ======================================================
 // INVERSE KINEMATICS (MATCHES YOUR FK EXACTLY)
@@ -208,6 +188,33 @@ void moveScissorSecond(float angle) {
   moveToTargetAngles(0.125, 0.25);
 }
 
+void moveToDefaultAngles() {
+  targetAngles[SERVO_BASE]     = 90;
+  targetAngles[SERVO_SHOULDER] = 145; //125
+  targetAngles[SERVO_ELBOW]    = 130; //110
+  targetAngles[SERVO_WRIST]    = 90;
+  targetAngles[SERVO_SCISSOR]  = 180;
+  moveToTargetAngles(0.125, 0.25);
+}
+
+void moveToNinetyDegrees() {
+  targetAngles[SERVO_BASE]     = 90;
+  targetAngles[SERVO_SHOULDER] = 95;
+  targetAngles[SERVO_ELBOW]    = 80;
+  targetAngles[SERVO_WRIST]    = 90;
+  targetAngles[SERVO_SCISSOR]  = 180;
+  moveToTargetAngles(0.125, 0.25);
+}
+
+void moveToExtendedPosition() {
+  targetAngles[SERVO_BASE]     = 90;
+  targetAngles[SERVO_SHOULDER] = 50;
+  targetAngles[SERVO_ELBOW]    = 35;
+  targetAngles[SERVO_WRIST]    = 90;
+  targetAngles[SERVO_SCISSOR]  = 180;
+  moveToTargetAngles(0.125, 0.25);
+}
+
 // ======================================================
 // SETUP
 // ======================================================
@@ -292,6 +299,10 @@ void loop() {
     delay(500);
     moveScissorSecond(120);
 
+    delay(1000);
+
+    moveToDefaultAngles();
+
     // FK check of the IK actual angles 
     float base_math   = currentAngles[SERVO_BASE];
     float shoulder_math =(currentAngles[SERVO_SHOULDER] - 5);
@@ -334,14 +345,12 @@ void loop() {
     float t1 = input.substring(s1 + 1, s2).toFloat();
     float t2 = input.substring(s2 + 1).toFloat();
 
-    float t3 = computeWristAngle(t1, t2, 0.0f);
-
     // Direct servo movement with offsets
     targetAngles[SERVO_BASE]     = t0;
     targetAngles[SERVO_SHOULDER] = t1 + 5;
     targetAngles[SERVO_ELBOW]    = t2 - 10;
-    targetAngles[SERVO_WRIST]    = t3;
-
+    targetAngles[SERVO_WRIST]    = 90;
+    
     // Move arm first
     moveToTargetAngles(0.125, 0.25);
 
@@ -363,6 +372,10 @@ void loop() {
     moveScissorOnce(70);
     delay(500);
     moveScissorSecond(120);
+
+    delay(1000);
+
+    moveToDefaultAngles();
 
     float fx, fy, fz;
     computeForwardKinematics(t0, t1, t2, fx, fy, fz);
@@ -449,4 +462,3 @@ void loop() {
   Serial.println(" ");
   }
 }
-

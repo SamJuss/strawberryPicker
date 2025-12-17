@@ -388,20 +388,66 @@ void loop() {
   }
 
   else if (input.startsWith("r")) {
-    Serial.println("Commands:");
-    Serial.println("I x y z");
-    Serial.println("F t0 t1 t2");
+  moveToDefaultAngles();
+  float fx, fy, fz;
+  computeForwardKinematics(currentAngles[SERVO_BASE], currentAngles[SERVO_SHOULDER], currentAngles[SERVO_ELBOW], fx, fy, fz);
+
+  Serial.println("=== RESET ===");
+
+  Serial.print("Actual Servo Angles: ");
+  Serial.print(currentAngles[0]); Serial.print(" ");
+  Serial.print(currentAngles[1]); Serial.print(" ");
+  Serial.print(currentAngles[2]); Serial.print(" ");
+  Serial.println(currentAngles[3]);
+
+  Serial.print("Current XYZ: ");
+  Serial.print(fx); Serial.print(" ");
+  Serial.print(fy); Serial.print(" ");
+  Serial.println(fz);
+  Serial.println("=================");
+  Serial.println(" ");
   }
 
   else if (input.startsWith("9")) {
-    Serial.println("Commands:");
-    Serial.println("I x y z");
-    Serial.println("F t0 t1 t2");
+  moveToNinetyDegrees();
+  float fx, fy, fz;
+  computeForwardKinematics(currentAngles[SERVO_BASE], currentAngles[SERVO_SHOULDER], currentAngles[SERVO_ELBOW], fx, fy, fz);
+
+  Serial.println("=== RESET ===");
+
+  Serial.print("Actual Servo Angles: ");
+  Serial.print(currentAngles[0]); Serial.print(" ");
+  Serial.print(currentAngles[1]); Serial.print(" ");
+  Serial.print(currentAngles[2]); Serial.print(" ");
+  Serial.println(currentAngles[3]);
+
+  Serial.print("Current XYZ: ");
+  Serial.print(fx); Serial.print(" ");
+  Serial.print(fy); Serial.print(" ");
+  Serial.println(fz);
+  Serial.println("=================");
+  Serial.println(" ");
   }
 
-  else {
-    Serial.println("Commands:");
-    Serial.println("I x y z");
-    Serial.println("F t0 t1 t2");
+  else if (input.startsWith("e")) {
+  moveToExtendedPosition();
+  float fx, fy, fz;
+  computeForwardKinematics(currentAngles[SERVO_BASE], currentAngles[SERVO_SHOULDER], currentAngles[SERVO_ELBOW], fx, fy, fz);
+
+  Serial.println("=== RESET ===");
+
+  Serial.print("Actual Servo Angles: ");
+  Serial.print(currentAngles[0]); Serial.print(" ");
+  Serial.print(currentAngles[1]); Serial.print(" ");
+  Serial.print(currentAngles[2]); Serial.print(" ");
+  Serial.println(currentAngles[3]);
+
+  Serial.print("Current XYZ: ");
+  Serial.print(fx); Serial.print(" ");
+  Serial.print(fy); Serial.print(" ");
+  Serial.println(fz);
+  Serial.println("=================");
+  Serial.println(" ");
   }
 }
+

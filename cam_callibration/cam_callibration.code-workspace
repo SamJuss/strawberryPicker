@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "inverse kinematics",
+			"path": "inverse kinematics"
+		}
+	],
+	"settings": {}
+}

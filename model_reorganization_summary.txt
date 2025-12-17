@@ -1,0 +1,173 @@
+Model Reorganization Summary
+============================
+
+Total model files found: 96
+Files moved: 39
+
+run_20251125_150400_manual_baseline: epoch20.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch20.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch20_1.pt
+
+run_20251125_150400_manual_baseline: epoch70.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch70.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch70_1.pt
+
+run_20251125_150400_manual_baseline: epoch10.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch10.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch10_1.pt
+
+run_20251125_150400_manual_baseline: epoch30.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch30.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch30_1.pt
+
+run_20251125_150400_manual_baseline: epoch50.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch50.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch50_1.pt
+
+run_20251125_150400_manual_baseline: epoch40.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch40.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch40_1.pt
+
+run_20251125_150400_manual_baseline: epoch0.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch0.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch0_1.pt
+
+run_20251125_150400_manual_baseline: epoch60.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch60.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/epoch60_1.pt
+
+run_20251125_150400_manual_baseline: best.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/best.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/best_1.pt
+
+run_20251125_150400_manual_baseline: last.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/last.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/last_1.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch20.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch20.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch20.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch70.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch70.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch70.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch10.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch10.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch10.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch80.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch80.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch80.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch30.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch30.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch30.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch50.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch50.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch50.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch40.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch40.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch40.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch0.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch0.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch0.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch90.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch90.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch90.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: epoch60.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/epoch60.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch60.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: best.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/best.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/best.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: last.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n/weights/last.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/last.pt
+
+run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433: best.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/yolov8s_improved_detection_v2_20251202_153433/weights/best.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433/weights/best.pt
+
+run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433: model.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/yolov8s_improved_detection_v2_20251202_153433/weights/model.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433/weights/model.pt
+
+run_20251202_210737_yolov8s_enhanced: strawberry_yolov8s_enhanced.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/yolov8s_enhanced/strawberry_yolov8s_enhanced.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251202_210737_yolov8s_enhanced/weights/strawberry_yolov8s_enhanced.pt
+
+run_20251202_210740_baseline: First_run_Baseline.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/yolov8n_baseline_models/First_run_Baseline.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251202_210740_baseline/weights/First_run_Baseline.pt
+
+run_20251125_150400_manual_baseline: strawberry_yolov8n.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/yolov8n_kaggle_2500images_trained_20251203_130255/weights/yolov8n/strawberry_yolov8n.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251125_150400_manual_baseline/weights/strawberry_yolov8n.pt
+
+optimized_yolov8n_20251204_154529: best.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/optimized_yolov8n_20251204_154529/weights/best.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/optimized_yolov8n_20251204_154529/weights/best.pt
+
+optimized_yolov8n_20251204_154529: last.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/optimized_yolov8n_20251204_154529/weights/last.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/optimized_yolov8n_20251204_154529/weights/last.pt
+
+kaggle_strawberry_yolov8s_20251204_2105262: strawberry_yolov8n.onnx
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8s_20251204_2105262/onnx/strawberry_yolov8n.onnx
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/strawberry_yolov8n.onnx
+
+kaggle_strawberry_yolov8s_20251204_2105262: strawberry_yolov8s_enhanced.onnx
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8s_20251204_2105262/onnx/strawberry_yolov8s_enhanced.onnx
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/strawberry_yolov8s_enhanced.onnx
+
+kaggle_strawberry_yolov8s_20251204_2105262: best.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8s_20251204_2105262/weights/best.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/best.pt
+
+kaggle_strawberry_yolov8s_20251204_2105262: last.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8s_20251204_2105262/weights/last.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/last.pt
+
+run_20251202_210737_yolov8s_enhanced: strawberry_yolov8s_enhanced.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8s_20251204_2105262/weights/yolov8s/strawberry_yolov8s_enhanced.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/run_20251202_210737_yolov8s_enhanced/weights/strawberry_yolov8s_enhanced_1.pt
+
+kaggle_strawberry_yolov8s_20251204_2105262: yolov8s.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8s_20251204_2105262/weights/yolov8s/yolov8s.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/yolov8s.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: best.onnx
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8n_20251204_115538/weights/best.onnx
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/best.onnx
+
+kaggle_strawberry_yolov8n_20251204_115538: best_fp16.onnx
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8n_20251204_115538/weights/best_fp16.onnx
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/best_fp16.onnx
+
+kaggle_strawberry_yolov8n_20251204_115538: best.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8n_20251204_115538/weights/best.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/best_1.pt
+
+kaggle_strawberry_yolov8n_20251204_115538: last.pt
+  from: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/detection/kaggle_strawberry_yolov8n_20251204_115538/weights/last.pt
+  to:   /home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/last_1.pt
+
+
+Updated registry entries:
+run_20251125_150400_manual_baseline: model_path = model/results/run_20251125_150400_manual_baseline/weights/epoch0_1.pt, results_path = model/results/run_20251125_150400_manual_baseline
+run_20251202_210737_yolov8s_enhanced: model_path = model/results/run_20251202_210737_yolov8s_enhanced/weights/strawberry_yolov8s_enhanced.pt, results_path = model/results/run_20251202_210737_yolov8s_enhanced
+run_20251202_210739_yolov8n: model_path = /home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8n/strawberry_yolov8n.pt, results_path = model/results/run_20251202_210739_yolov8n
+run_20251202_210740_baseline: model_path = model/results/run_20251202_210740_baseline/weights/First_run_Baseline.pt, results_path = model/results/run_20251202_210740_baseline
+run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433: model_path = model/results/run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433/weights/best.pt, results_path = model/results/run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433
+kaggle_yolov8n_20251125_150400: model_path = None, results_path = None
+kaggle_strawberry_yolov8n_20251204_115538: model_path = model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch20.pt, results_path = model/results/kaggle_strawberry_yolov8n_20251204_115538
+kaggle_strawberry_yolov8s_20251204_2105262: model_path = model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/yolov8s.pt, results_path = model/results/kaggle_strawberry_yolov8s_20251204_2105262
+optimized_yolov8n_20251204_154529: model_path = model/results/optimized_yolov8n_20251204_154529/weights/best.pt, results_path = model/results/optimized_yolov8n_20251204_154529

@@ -35,8 +35,8 @@
     "pytorch_version": "2.9.1+cu128",
     "cuda_version": "12.8",
     "os_info": "Linux 6.6.87.2-microsoft-standard-WSL2",
-    "model_path": "model/weights/strawberry_yolov8n.pt",
-    "results_path": "model/results/strawberry_detection",
+    "model_path": "model/results/run_20251125_150400_manual_baseline/weights/epoch0_1.pt",
+    "results_path": "model/results/run_20251125_150400_manual_baseline",
     "config_path": "model/results/strawberry_detection/args.yaml",
     "status": "completed",
     "early_stopped": false,
@@ -91,8 +91,8 @@
     "pytorch_version": "2.9.1+cu128",
     "cuda_version": "12.8",
     "os_info": "linux",
-    "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_enhanced/strawberry_yolov8s_enhanced.pt",
-    "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection",
+    "model_path": "model/results/run_20251202_210737_yolov8s_enhanced/weights/strawberry_yolov8s_enhanced.pt",
+    "results_path": "model/results/run_20251202_210737_yolov8s_enhanced",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_enhanced/strawberry_yolov8s_enhanced.pt",
     "status": "completed",
     "teacher_model": null,
@@ -160,9 +160,9 @@
     "pytorch_version": "2.9.1+cu128",
     "cuda_version": "12.8",
     "os_info": "linux",
-    "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8n/strawberry_yolov8n.pt",
-    "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection",
-    "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8n/strawberry_yolov8n.pt",
+    "model_path": "model/results/run_20251202_210739_yolov8n/weights/strawberry_yolov8n.pt",
+    "results_path": "model/results/run_20251202_210739_yolov8n",
+    "config_path": null,
     "status": "completed",
     "teacher_model": null,
     "distillation_temperature": 1.0,
@@ -229,8 +229,8 @@
     "pytorch_version": "2.9.1+cu128",
     "cuda_version": "12.8",
     "os_info": "linux",
-    "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/baseline/First_run_Baseline.pt",
-    "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection",
+    "model_path": "model/results/run_20251202_210740_baseline/weights/First_run_Baseline.pt",
+    "results_path": "model/results/run_20251202_210740_baseline",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/baseline/First_run_Baseline.pt",
     "status": "completed",
     "teacher_model": null,
@@ -298,8 +298,8 @@
     "pytorch_version": "2.9.1+cu128",
     "cuda_version": "12.8",
     "os_info": "linux",
-    "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_improved_detection_v2_20251202_153433/weights/best.pt",
-    "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_improved_detection_v2_20251202_153433",
+    "model_path": "model/results/run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433/weights/best.pt",
+    "results_path": "model/results/run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/models/detection/yolov8s_improved_detection_v2_20251202_153433/config/training_config.json",
     "status": "completed",
     "teacher_model": null,
@@ -356,7 +356,9 @@
       "mAP@50": 0.98927
     },
     "status": "completed",
-    "best_epoch": 50
+    "best_epoch": 50,
+    "results_path": "model/results/kaggle_strawberry_yolov8n_20251204_115538",
+    "model_path": "model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch20.pt"
   },
   {
     "run_id": "kaggle_strawberry_yolov8s_20251204_2105262",
@@ -371,7 +373,9 @@
       "mAP@50": 0.9762
     },
     "status": "completed",
-    "best_epoch": 150
+    "best_epoch": 150,
+    "results_path": "model/results/kaggle_strawberry_yolov8s_20251204_2105262",
+    "model_path": "model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/yolov8s.pt"
   },
   {
     "run_id": "optimized_yolov8n_20251204_154529",
@@ -386,6 +390,8 @@
       "mAP@50": 0.9837
     },
     "status": "completed",
-    "best_epoch": 100
+    "best_epoch": 100,
+    "results_path": "model/results/optimized_yolov8n_20251204_154529",
+    "model_path": "model/results/optimized_yolov8n_20251204_154529/weights/best.pt"
   }
 ]

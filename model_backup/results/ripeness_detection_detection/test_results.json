@@ -1,0 +1,30 @@
+{
+  "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/ripeness_detection_detection/weights/best.pt",
+  "test_date": "2025-12-13",
+  "metrics": {
+    "mAP50": 0.8307086743974003,
+    "mAP50_95": 0.5709539754803881,
+    "precision": 0.7384277332164363,
+    "recall": 0.7950742646945179
+  },
+  "per_class": {
+    "0": {
+      "ap50": 0.9308548002277905,
+      "ap50_95": 0.6573207510666392,
+      "precision": 0.7843174159802208,
+      "recall": 0.9240506329113924
+    },
+    "1": {
+      "ap50": 0.8999920142867001,
+      "ap50_95": 0.610837470887157,
+      "precision": 0.8355596843357126,
+      "recall": 0.8714285714285714
+    },
+    "2": {
+      "ap50": 0.6612792086777102,
+      "ap50_95": 0.44470370448736835,
+      "precision": 0.5954060993333758,
+      "recall": 0.5897435897435898
+    }
+  }
+}

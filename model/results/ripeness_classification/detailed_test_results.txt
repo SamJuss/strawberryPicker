@@ -1,0 +1,34 @@
+RIPENESS CLASSIFIER TEST RESULTS
+============================================================
+
+Overall Accuracy: 100.00%
+Total Samples: 20
+Correct Predictions: 20
+
+PER-CLASS RESULTS:
+  unripe: 7/7 (100.00%)
+  ripe: 13/13 (100.00%)
+
+AVERAGE CONFIDENCE: 0.954
+
+ALL PREDICTIONS:
+✓ 217_png.rf.a71902c20a6ed0ba07fc9d2938c9248d_box1.jpg: True=ripe, Pred=ripe, Conf=0.994
+✓ 489_png.rf.4485f0cc82c80c51a956a5c4be18ea39_box0.jpg: True=unripe, Pred=unripe, Conf=0.993
+✓ 207_png.rf.64395e811bf501be18075c20b051e23b_box1.jpg: True=ripe, Pred=ripe, Conf=0.984
+✓ 307_png.rf.a75dcde052dbedecba2b12834731dd87_box0.jpg: True=unripe, Pred=unripe, Conf=0.701
+✓ 1149_png.rf.b0fe345efab45eb2630f48af5f7a8069_box0.jpg: True=ripe, Pred=ripe, Conf=0.891
+✓ 917_png.rf.d3edf20c900640b21ad5475dd3097036_box1.jpg: True=ripe, Pred=ripe, Conf=0.999
+✓ 917_png.rf.d3edf20c900640b21ad5475dd3097036_box0.jpg: True=unripe, Pred=unripe, Conf=0.986
+✓ 329_png.rf.1b699ded6ba45ca973ebe57e901700e3_box3.jpg: True=ripe, Pred=ripe, Conf=0.809
+✓ 475_png.rf.ac40ff2812bc64c5e75d1afe67ac41af_box0.jpg: True=unripe, Pred=unripe, Conf=1.000
+✓ 1111_png.rf.6325553401e4d8422da028ee0e17b174_box2.jpg: True=unripe, Pred=unripe, Conf=0.984
+✓ 1006_png.rf.94fc015e3d5d73e70db6df7637c911ca_box1.jpg: True=ripe, Pred=ripe, Conf=1.000
+✓ 267_png.rf.3cbad2aacd0810a9714caf131966dbb9_box0.jpg: True=ripe, Pred=ripe, Conf=0.991
+✓ 511_png.rf.61ea9022c8c64a1c164f0268510458f5_box0.jpg: True=ripe, Pred=ripe, Conf=0.999
+✓ 1006_png.rf.94fc015e3d5d73e70db6df7637c911ca_box4.jpg: True=ripe, Pred=ripe, Conf=1.000
+✓ 354_png.rf.613a36dac8d35591210f8fcad1748314_box0.jpg: True=ripe, Pred=ripe, Conf=0.811
+✓ 511_png.rf.61ea9022c8c64a1c164f0268510458f5_box1.jpg: True=ripe, Pred=ripe, Conf=1.000
+✓ 1111_png.rf.6325553401e4d8422da028ee0e17b174_box0.jpg: True=unripe, Pred=unripe, Conf=0.999
+✓ 931_png.rf.39247ed41b49b27e7de3da02028814fa_box1.jpg: True=ripe, Pred=ripe, Conf=0.999
+✓ 1037_png.rf.d3f3194048994fbf55e2c348f11493ba_box2.jpg: True=ripe, Pred=ripe, Conf=0.999
+✓ 522_png.rf.e0a0507ff872e663a3086c240d02c00f_box3.jpg: True=unripe, Pred=unripe, Conf=0.933

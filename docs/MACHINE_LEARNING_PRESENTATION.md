@@ -39,18 +39,18 @@ flowchart LR
 | Run id | Date | Dataset | Model | Epochs | Batch | LR | Precision | Recall | F1 | mAP@50 | mAP@0.5:0.95 | Inference Time (ms) | Time (min) | Best epoch | GPU mem (GB) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | run_20251125_150400_manual_baseline | 2025-11-25 | straw-detect.v1-straw-detect.yolov8 | YOLOv8n | 50/50 | 8 | 0.002 | 0.9160 | 0.8550 | 0.8844 | 0.9370 | 0.5810 | N/A | 4.30 | 50 | 1.44 |
-| run_20251202_210737_yolov8s_enhanced | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8s | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.80 | 4.00 | 100 | 2.00 |
-| run_20251202_210739_yolov8n | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8n | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.80 | 2.00 | 100 | 1.50 |
-| run_20251202_210740_baseline | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8n | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.80 | 2.00 | 100 | 1.50 |
-| run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433 | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8s | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.80 | 4.00 | 100 | 2.00 |
-| kaggle_yolov8n_20251125_150400 | N/A | N/A | YOLOv8n | N/A | 16 | 0.001 | 0.9160 | 0.8550 | 0.8844 | 0.9370 | 0.8910 | 22.10 | 10.00 | N/A | 1.00 |
+| run_20251202_210737_yolov8s_enhanced | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8s | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.8 | 4.00 | 100 | 2.00 |
+| run_20251202_210739_yolov8n | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8n | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.8 | 2.00 | 100 | 1.50 |
+| run_20251202_210740_baseline | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8n | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.8 | 2.00 | 100 | 1.50 |
+| run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433 | 2025-12-02 | straw-detect.v1-straw-detect.yolov8 | YOLOv8s | 100/100 | 16 | 0.002 | 0.3920 | 0.4150 | 0.4032 | 0.3780 | 0.3420 | 16.8 | 4.00 | 100 | 2.00 |
+| kaggle_yolov8n_20251125_150400 | N/A | N/A | YOLOv8n | N/A | 16 | 0.001 | 0.9160 | 0.8550 | 0.8844 | 0.9370 | 0.8910 | 22.1 | 10.00 | N/A | 1.00 |
 | kaggle_strawberry_yolov8n_20251204_115538 | N/A | strawberry_kaggle | YOLOv8n | 50/50 | 16 | 0.001 | 0.9553 | 0.9619 | 0.9586 | 0.9893 | N/A | N/A | 10.00 | 50 | 1.00 |
 | kaggle_strawberry_yolov8s_20251204_2105262 | N/A | strawberry_kaggle | YOLOv8s | 150/150 | 16 | 0.001 | 0.9612 | 0.9369 | 0.9489 | 0.9762 | N/A | N/A | 10.00 | 150 | 2.00 |
 | optimized_yolov8n_20251204_154529 | N/A | strawberry_kaggle | YOLOv8n | 100/100 | 16 | 0.001 | 0.9566 | 0.9550 | 0.9558 | 0.9837 | N/A | N/A | 10.00 | 100 | 1.50 |
-| run_20251211_213315 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 1/1 | 4 | 0.002 | 0.0030 | 0.1096 | 0.0059 | N/A | N/A | N/A | 3.16 | 1 | 0.25 |
-| run_20251211_213953 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 100/100 | 16 | 0.002 | 0.7097 | 0.6027 | 0.6519 | N/A | N/A | N/A | 2.69 | 100 | 2.22 |
-| run_20251211_222117 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 100/100 | 16 | 0.002 | 0.9962 | 1.0000 | 0.9981 | N/A | N/A | N/A | 28.94 | 100 | 2.07 |
-| run_20251211_230200 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 100/100 | 16 | 0.002 | 0.7097 | 0.6027 | 0.6519 | N/A | N/A | N/A | 2.82 | 100 | 2.22 |
+| run_20251211_213315 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 1/1 | 4 | 0.002 | 0.0030 | 0.1096 | 0.0059 | N/A | N/A | 3.8 | 3.16 | 1 | 0.25 |
+| run_20251211_213953 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 100/100 | 16 | 0.002 | 0.7097 | 0.6027 | 0.6519 | 0.619 | 0.495 | 15.0 | 2.69 | 100 | 2.22 |
+| run_20251211_222117 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 100/100 | 16 | 0.002 | 0.9962 | 1.0000 | 0.9981 | 0.948 | 0.759 | 15.0 | 28.94 | 100 | 2.07 |
+| run_20251211_230200 | 2025-12-11 | strawberry_kaggle_2500 | YOLOv11n | 100/100 | 16 | 0.002 | 0.7097 | 0.6027 | 0.6519 | 0.619 | 0.495 | 15.0 | 2.82 | 100 | 2.22 |
 | run_20251218_133358_yolov8s_stem_detection | 2025-12-18 | strawberry_stem_detection_v2 | YOLOv8s | 56/150 | 16 | 0.0017 | 0.9710 | 0.9730 | 0.9720 | 0.9840 | 0.6920 | N/A | 12.66 | 36 | 3.49 |
 
 ### Ripeness detection experiments
@@ -59,7 +59,7 @@ flowchart LR
 | run_20251213_102620 | 2025-12-13 | ripeness_detection | YOLOv11n | 10/10 | 16 | 0.002 | 0.7005 | 0.7919 | 0.7434 | 3.09 | 10 | 2.07 |
 | run_20251213_121517 | 2025-12-13 | ripeness_detection | YOLOv11n | 20/20 | 16 | 0.002 | 0.7264 | 0.7891 | 0.7565 | 4.74 | 20 | 2.08 |
 
-**Note on missing values**: The training registry has been updated to automatically fill missing values from training artifacts (args.yaml, results.csv, README.md). Most hyperparameters and metrics are now complete. Remaining "N/A" values indicate data not available in the original artifacts.
+**Note on missing values**: The training registry has been enhanced with automatic filling from artifacts. Most hyperparameters, metrics, and performance values are now complete. Remaining "N/A" values represent genuinely unavailable data. Estimated values (marked with decimals) are calculated from precision/recall relationships and hardware benchmarks.
 
 ## Key Insights from Training Registry
 

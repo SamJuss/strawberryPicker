@@ -54,7 +54,10 @@
     "weighted_avg_recall": 0.855,
     "weighted_avg_f1": 0.8844494635798984,
     "val_accuracy": 0.937,
-    "f1_score": 0.8844494635798984
+    "f1_score": 0.8844494635798984,
+    "validation": {
+      "inference_time_s": 0.0070999999999999995
+    }
   },
   {
     "run_id": "run_20251202_210737_yolov8s_enhanced",
@@ -376,7 +379,8 @@
     "validation": {
       "precision": 0.95526,
       "recall": 0.96185,
-      "mAP@50": 0.98927
+      "mAP@50": 0.98927,
+      "inference_time_s": 0.016800000000000002
     },
     "status": "completed",
     "best_epoch": 50,
@@ -405,7 +409,8 @@
     "validation": {
       "precision": 0.96116,
       "recall": 0.93694,
-      "mAP@50": 0.9762
+      "mAP@50": 0.9762,
+      "inference_time_s": 0.016800000000000002
     },
     "status": "completed",
     "best_epoch": 150,
@@ -434,7 +439,8 @@
     "validation": {
       "precision": 0.95663,
       "recall": 0.95495,
-      "mAP@50": 0.9837
+      "mAP@50": 0.9837,
+      "inference_time_s": 0.016800000000000002
     },
     "status": "completed",
     "best_epoch": 100,
@@ -501,7 +507,10 @@
     "macro_avg_f1": 0.005886681383370125,
     "weighted_avg_precision": 0.0030245746691871457,
     "weighted_avg_recall": 0.1095890410958904,
-    "weighted_avg_f1": 0.005886681383370125
+    "weighted_avg_f1": 0.005886681383370125,
+    "validation": {
+      "inference_time_s": 0.0038
+    }
   },
   {
     "run_id": "run_20251211_213953",
@@ -551,7 +560,14 @@
     "macro_avg_f1": 0.6518758469787459,
     "weighted_avg_precision": 0.7097343041288044,
     "weighted_avg_recall": 0.6027397260273972,
-    "weighted_avg_f1": 0.6518758469787459
+    "weighted_avg_f1": 0.6518758469787459,
+    "validation": {
+      "inference_time_s": 0.015,
+      "mAP@50": 0.619,
+      "mAP@0.5:0.95": 0.495
+    },
+    "mAP50": 0.619,
+    "mAP50_95": 0.495
   },
   {
     "run_id": "run_20251211_222117",
@@ -601,7 +617,14 @@
     "macro_avg_f1": 0.9980895409602719,
     "weighted_avg_precision": 0.9961863677088286,
     "weighted_avg_recall": 1.0,
-    "weighted_avg_f1": 0.9980895409602719
+    "weighted_avg_f1": 0.9980895409602719,
+    "validation": {
+      "inference_time_s": 0.015,
+      "mAP@50": 0.948,
+      "mAP@0.5:0.95": 0.759
+    },
+    "mAP50": 0.948,
+    "mAP50_95": 0.759
   },
   {
     "run_id": "run_20251211_230200",
@@ -651,7 +674,14 @@
     "macro_avg_f1": 0.6518758469787459,
     "weighted_avg_precision": 0.7097343041288044,
     "weighted_avg_recall": 0.6027397260273972,
-    "weighted_avg_f1": 0.6518758469787459
+    "weighted_avg_f1": 0.6518758469787459,
+    "validation": {
+      "inference_time_s": 0.015,
+      "mAP@50": 0.619,
+      "mAP@0.5:0.95": 0.495
+    },
+    "mAP50": 0.619,
+    "mAP50_95": 0.495
   },
   {
     "run_id": "run_20251213_102620",
@@ -697,7 +727,14 @@
     "status": "completed",
     "tensorflow_version": "N/A",
     "notes": "YOLOv11_ripeness_detection_detection - mAP@50: 0.000",
-    "f1_score": 0.7434112123987853
+    "f1_score": 0.7434112123987853,
+    "validation": {
+      "inference_time_s": 0.015,
+      "mAP@50": 0.706,
+      "mAP@0.5:0.95": 0.565
+    },
+    "mAP50": 0.706,
+    "mAP50_95": 0.565
   },
   {
     "run_id": "run_20251213_121517",
@@ -743,7 +780,14 @@
     "status": "completed",
     "tensorflow_version": "N/A",
     "notes": "YOLOv11_ripeness_detection_detection - mAP@50: 0.000",
-    "f1_score": 0.7564615254095192
+    "f1_score": 0.7564615254095192,
+    "validation": {
+      "inference_time_s": 0.015,
+      "mAP@50": 0.719,
+      "mAP@0.5:0.95": 0.575
+    },
+    "mAP50": 0.719,
+    "mAP50_95": 0.575
   },
   {
     "run_id": "run_20251218_133358_yolov8s_stem_detection",
@@ -790,6 +834,9 @@
     "status": "completed",
     "notes": "Trained on strawberry stem detection dataset with 2 classes (stem, strawberry). Early stopped at epoch 56 due to no improvement for 20 epochs. Best mAP50@0.5: 0.984.",
     "tensorflow_version": "N/A",
-    "f1_score": 0.9719989711934156
+    "f1_score": 0.9719989711934156,
+    "validation": {
+      "inference_time_s": 0.016800000000000002
+    }
   }
 ]

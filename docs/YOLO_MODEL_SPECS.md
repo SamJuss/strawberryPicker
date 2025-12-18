@@ -174,8 +174,8 @@ The registry automatically fills missing values from training artifacts:
 ```mermaid
 flowchart TD
     A[Start: Detection Model Selection] --> B{Compute constraints?}
-    B -->|High (GPU/Edge GPU)| C[YOLOv8s<br/>11.2M params, 28.6 GFLOPs]
-    B -->|Low (CPU/Raspberry Pi)| D[YOLOv11n<br/>2.6M params, 6.5 GFLOPs]
+    B -->|High GPU/Edge GPU| C[YOLOv8s<br/>11.2M params, 28.6 GFLOPs]
+    B -->|Low CPU/Raspberry Pi| D[YOLOv11n<br/>2.6M params, 6.5 GFLOPs]
     
     C --> E[Train with 640×640, AdamW, 100 epochs]
     D --> F[Train with 640×640, AdamW, 100 epochs]

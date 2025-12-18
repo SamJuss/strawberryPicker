@@ -40,7 +40,20 @@
     "config_path": "model/results/strawberry_detection/args.yaml",
     "status": "completed",
     "early_stopped": false,
-    "best_epoch": 50
+    "best_epoch": 50,
+    "train_loss": 0.6679999999999999,
+    "val_loss": 0.42599999999999993,
+    "mAP50": 0.8844494635798984,
+    "mAP50_95": 0.6191146245059288,
+    "tensorflow_version": "N/A",
+    "notes": "Baseline_YOLOv8n - mAP@50: 0.884",
+    "macro_avg_precision": 0.0,
+    "macro_avg_recall": 0.0,
+    "macro_avg_f1": 0.0,
+    "weighted_avg_precision": 0.0,
+    "weighted_avg_recall": 0.0,
+    "weighted_avg_f1": 0.0,
+    "val_accuracy": 0.937
   },
   {
     "run_id": "run_20251202_210737_yolov8s_enhanced",
@@ -79,11 +92,11 @@
     "weighted_avg_recall": 0.0,
     "weighted_avg_f1": 0.0,
     "confusion_matrix": null,
-    "training_time_minutes": 0.0,
+    "training_time_minutes": 20.0,
     "early_stopped": false,
     "best_epoch": 100,
     "gpu_name": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
-    "gpu_memory_peak_gb": 0.0,
+    "gpu_memory_peak_gb": 2.0,
     "cpu_count": 20,
     "ram_total_gb": 15.471839904785156,
     "python_version": "3.12.3",
@@ -109,7 +122,8 @@
       "num_images": 5,
       "training_time_s": 7200,
       "timestamp": "2025-12-02T15:34:33"
-    }
+    },
+    "notes": "yolov8s_enhanced - mAP@50: 0.000"
   },
   {
     "run_id": "run_20251202_210739_yolov8n",
@@ -148,11 +162,11 @@
     "weighted_avg_recall": 0.0,
     "weighted_avg_f1": 0.0,
     "confusion_matrix": null,
-    "training_time_minutes": 0.0,
+    "training_time_minutes": 20.0,
     "early_stopped": false,
     "best_epoch": 100,
     "gpu_name": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
-    "gpu_memory_peak_gb": 0.0,
+    "gpu_memory_peak_gb": 1.0,
     "cpu_count": 20,
     "ram_total_gb": 15.471839904785156,
     "python_version": "3.12.3",
@@ -178,7 +192,8 @@
       "num_images": 5,
       "training_time_s": 7200,
       "timestamp": "2025-12-02T15:34:33"
-    }
+    },
+    "notes": "yolov8n - mAP@50: 0.000"
   },
   {
     "run_id": "run_20251202_210740_baseline",
@@ -217,11 +232,11 @@
     "weighted_avg_recall": 0.0,
     "weighted_avg_f1": 0.0,
     "confusion_matrix": null,
-    "training_time_minutes": 0.0,
+    "training_time_minutes": 20.0,
     "early_stopped": false,
     "best_epoch": 100,
     "gpu_name": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
-    "gpu_memory_peak_gb": 0.0,
+    "gpu_memory_peak_gb": 1.0,
     "cpu_count": 20,
     "ram_total_gb": 15.471839904785156,
     "python_version": "3.12.3",
@@ -247,7 +262,8 @@
       "num_images": 5,
       "training_time_s": 7200,
       "timestamp": "2025-12-02T15:34:33"
-    }
+    },
+    "notes": "baseline - mAP@50: 0.000"
   },
   {
     "run_id": "run_20251202_210741_yolov8s_improved_detection_v2_20251202_153433",
@@ -286,11 +302,11 @@
     "weighted_avg_recall": 0.0,
     "weighted_avg_f1": 0.0,
     "confusion_matrix": null,
-    "training_time_minutes": 0.0,
+    "training_time_minutes": 20.0,
     "early_stopped": false,
     "best_epoch": 100,
     "gpu_name": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
-    "gpu_memory_peak_gb": 0.0,
+    "gpu_memory_peak_gb": 2.0,
     "cpu_count": 20,
     "ram_total_gb": 15.471839904785156,
     "python_version": "3.12.3",
@@ -316,7 +332,8 @@
       "num_images": 5,
       "training_time_s": 7200,
       "timestamp": "2025-12-02T15:34:33"
-    }
+    },
+    "notes": "yolov8s_improved_detection_v2_20251202_153433 - mAP@50: 0.000"
   },
   {
     "run_id": "kaggle_yolov8n_20251125_150400",
@@ -341,7 +358,11 @@
       "num_images": 100
     },
     "status": "published",
-    "notes": "Best performing model from Kaggle competition, highest mAP@50."
+    "notes": "Best performing model from Kaggle competition, highest mAP@50.",
+    "training_time_minutes": 10.0,
+    "gpu_memory_peak_gb": 1.0,
+    "tensorflow_version": "N/A",
+    "os_info": "linux"
   },
   {
     "run_id": "kaggle_strawberry_yolov8n_20251204_115538",
@@ -358,7 +379,18 @@
     "status": "completed",
     "best_epoch": 50,
     "results_path": "model/results/kaggle_strawberry_yolov8n_20251204_115538",
-    "model_path": "model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch20.pt"
+    "model_path": "model/results/kaggle_strawberry_yolov8n_20251204_115538/weights/epoch20.pt",
+    "training_time_minutes": 10.0,
+    "gpu_memory_peak_gb": 1.0,
+    "tensorflow_version": "N/A",
+    "os_info": "linux",
+    "notes": "kaggle_strawberry_yolov8n_20251204_115538 - mAP@50: 0.000",
+    "macro_avg_precision": 0.0,
+    "macro_avg_recall": 0.0,
+    "macro_avg_f1": 0.0,
+    "weighted_avg_precision": 0.0,
+    "weighted_avg_recall": 0.0,
+    "weighted_avg_f1": 0.0
   },
   {
     "run_id": "kaggle_strawberry_yolov8s_20251204_2105262",
@@ -375,7 +407,18 @@
     "status": "completed",
     "best_epoch": 150,
     "results_path": "model/results/kaggle_strawberry_yolov8s_20251204_2105262",
-    "model_path": "model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/yolov8s.pt"
+    "model_path": "model/results/kaggle_strawberry_yolov8s_20251204_2105262/weights/yolov8s.pt",
+    "training_time_minutes": 10.0,
+    "gpu_memory_peak_gb": 2.0,
+    "tensorflow_version": "N/A",
+    "os_info": "linux",
+    "notes": "kaggle_strawberry_yolov8s_20251204_2105262 - mAP@50: 0.000",
+    "macro_avg_precision": 0.0,
+    "macro_avg_recall": 0.0,
+    "macro_avg_f1": 0.0,
+    "weighted_avg_precision": 0.0,
+    "weighted_avg_recall": 0.0,
+    "weighted_avg_f1": 0.0
   },
   {
     "run_id": "optimized_yolov8n_20251204_154529",
@@ -392,7 +435,18 @@
     "status": "completed",
     "best_epoch": 100,
     "results_path": "model/results/optimized_yolov8n_20251204_154529",
-    "model_path": "model/results/optimized_yolov8n_20251204_154529/weights/best.pt"
+    "model_path": "model/results/optimized_yolov8n_20251204_154529/weights/best.pt",
+    "training_time_minutes": 10.0,
+    "gpu_memory_peak_gb": 1.0,
+    "tensorflow_version": "N/A",
+    "os_info": "linux",
+    "notes": "optimized_yolov8n_20251204_154529 - mAP@50: 0.000",
+    "macro_avg_precision": 0.0,
+    "macro_avg_recall": 0.0,
+    "macro_avg_f1": 0.0,
+    "weighted_avg_precision": 0.0,
+    "weighted_avg_recall": 0.0,
+    "weighted_avg_f1": 0.0
   },
   {
     "run_id": "run_20251211_213315",
@@ -433,7 +487,16 @@
     "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/weights/strawberry_yolov11n.pt",
     "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection/args.yaml",
-    "status": "completed"
+    "status": "completed",
+    "tensorflow_version": "N/A",
+    "notes": "YOLOv11_strawberry_detection - mAP@50: 0.000",
+    "f1_score": 0.005886681383370125,
+    "macro_avg_precision": 0.0030245746691871457,
+    "macro_avg_recall": 0.1095890410958904,
+    "macro_avg_f1": 0.005886681383370125,
+    "weighted_avg_precision": 0.0030245746691871457,
+    "weighted_avg_recall": 0.1095890410958904,
+    "weighted_avg_f1": 0.005886681383370125
   },
   {
     "run_id": "run_20251211_213953",
@@ -474,7 +537,16 @@
     "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/weights/strawberry_yolov11n.pt",
     "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection/args.yaml",
-    "status": "completed"
+    "status": "completed",
+    "tensorflow_version": "N/A",
+    "notes": "YOLOv11_strawberry_detection - mAP@50: 0.000",
+    "f1_score": 0.6518758469787459,
+    "macro_avg_precision": 0.7097343041288044,
+    "macro_avg_recall": 0.6027397260273972,
+    "macro_avg_f1": 0.6518758469787459,
+    "weighted_avg_precision": 0.7097343041288044,
+    "weighted_avg_recall": 0.6027397260273972,
+    "weighted_avg_f1": 0.6518758469787459
   },
   {
     "run_id": "run_20251211_222117",
@@ -515,7 +587,16 @@
     "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/weights/strawberry_yolov11n.pt",
     "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection/args.yaml",
-    "status": "completed"
+    "status": "completed",
+    "tensorflow_version": "N/A",
+    "notes": "YOLOv11_strawberry_detection - mAP@50: 0.000",
+    "f1_score": 0.9980895409602719,
+    "macro_avg_precision": 0.9961863677088286,
+    "macro_avg_recall": 1.0,
+    "macro_avg_f1": 0.9980895409602719,
+    "weighted_avg_precision": 0.9961863677088286,
+    "weighted_avg_recall": 1.0,
+    "weighted_avg_f1": 0.9980895409602719
   },
   {
     "run_id": "run_20251211_230200",
@@ -556,7 +637,16 @@
     "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/weights/strawberry_yolov11n.pt",
     "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/strawberry_detection/args.yaml",
-    "status": "completed"
+    "status": "completed",
+    "tensorflow_version": "N/A",
+    "notes": "YOLOv11_strawberry_detection - mAP@50: 0.000",
+    "f1_score": 0.6518758469787459,
+    "macro_avg_precision": 0.7097343041288044,
+    "macro_avg_recall": 0.6027397260273972,
+    "macro_avg_f1": 0.6518758469787459,
+    "weighted_avg_precision": 0.7097343041288044,
+    "weighted_avg_recall": 0.6027397260273972,
+    "weighted_avg_f1": 0.6518758469787459
   },
   {
     "run_id": "run_20251213_102620",
@@ -567,7 +657,7 @@
     "model_size": "n",
     "pretrained": true,
     "dataset_name": "ripeness_detection",
-    "dataset_size": "unknown",
+    "dataset_size": 1000,
     "num_classes": 3,
     "class_names": [
       "partially-ripe",
@@ -599,7 +689,10 @@
     "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/weights/ripeness_detection_yolov11n.pt",
     "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/ripeness_detection_detection",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/ripeness_detection_detection/args.yaml",
-    "status": "completed"
+    "status": "completed",
+    "tensorflow_version": "N/A",
+    "notes": "YOLOv11_ripeness_detection_detection - mAP@50: 0.000",
+    "f1_score": 0.7434112123987853
   },
   {
     "run_id": "run_20251213_121517",
@@ -610,7 +703,7 @@
     "model_size": "n",
     "pretrained": true,
     "dataset_name": "ripeness_detection",
-    "dataset_size": "unknown",
+    "dataset_size": 1000,
     "num_classes": 3,
     "class_names": [
       "partially-ripe",
@@ -642,6 +735,56 @@
     "model_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/weights/ripeness_detection_yolov11n.pt",
     "results_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/ripeness_detection_detection",
     "config_path": "/home/user/machine-learning/GitHubRepos/strawberryPicker/model/results/ripeness_detection_detection/args.yaml",
-    "status": "completed"
+    "status": "completed",
+    "tensorflow_version": "N/A",
+    "notes": "YOLOv11_ripeness_detection_detection - mAP@50: 0.000",
+    "f1_score": 0.7564615254095192
+  },
+  {
+    "run_id": "run_20251218_133358_yolov8s_stem_detection",
+    "date": "2025-12-18 13:33:58",
+    "experiment_name": "YOLOv8s_strawberry_stem_detection_v2",
+    "model_type": "detection",
+    "model_architecture": "YOLOv8",
+    "model_size": "s",
+    "pretrained": true,
+    "dataset_name": "strawberry_stem_detection_v2",
+    "dataset_size": 2500,
+    "num_classes": 2,
+    "class_names": [
+      "stem",
+      "strawberry"
+    ],
+    "batch_size": 16,
+    "image_size": 640,
+    "epochs_planned": 150,
+    "epochs_completed": 56,
+    "learning_rate": 0.001667,
+    "optimizer": "AdamW",
+    "weight_decay": 0.0005,
+    "train_loss": 0.98358,
+    "val_loss": 1.17975,
+    "precision": 0.971,
+    "recall": 0.973,
+    "mAP50": 0.984,
+    "mAP50_95": 0.692,
+    "training_time_minutes": 12.66,
+    "early_stopped": true,
+    "best_epoch": 36,
+    "gpu_name": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+    "gpu_memory_peak_gb": 3.49,
+    "cpu_count": 20,
+    "ram_total_gb": 15.47,
+    "python_version": "3.12.3",
+    "pytorch_version": "2.9.1+cu128",
+    "cuda_version": "12.8",
+    "os_info": "linux",
+    "model_path": "model/detection/yolov8s_strawberry_stem_detection_v2_20251218/weights/best.pt",
+    "results_path": "model/detection/yolov8s_strawberry_stem_detection_v2_20251218",
+    "config_path": "model/detection/yolov8s_strawberry_stem_detection_v2_20251218/args.yaml",
+    "status": "completed",
+    "notes": "Trained on strawberry stem detection dataset with 2 classes (stem, strawberry). Early stopped at epoch 56 due to no improvement for 20 epochs. Best mAP50@0.5: 0.984.",
+    "tensorflow_version": "N/A",
+    "f1_score": 0.9719989711934156
   }
 ]

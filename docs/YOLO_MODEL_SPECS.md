@@ -120,7 +120,42 @@ weight_decay: 0.0005
 - **Lower memory footprint**: Fits in <1 GB RAM, leaving headroom for the classification stage.
 - **Future‑proofing**: Exploring newer architectures ensures the pipeline can adapt to evolving hardware.
 
-## 4. Performance Comparison
+## 4. Training Registry and Experiment Tracking
+
+All training experiments are logged in a centralized registry (`model/training_registry.json`) that tracks hyperparameters, performance metrics, system information, and file paths for each run.
+
+### 4.1 Viewing Training History
+
+```bash
+# View all training runs with summary table
+python model/view_registry.py
+
+# Export registry to CSV for analysis
+python3 -c "from model.validation.training_registry import get_registry; get_registry().export_to_csv()"
+```
+
+### 4.2 Registry Fields
+
+The registry captures comprehensive information for each training run:
+
+- **Identification**: run_id, date, experiment_name
+- **Model**: architecture, size, pretrained status
+- **Dataset**: name, size, number of classes
+- **Hyperparameters**: batch_size, image_size, epochs, learning_rate, optimizer
+- **Performance**: precision, recall, mAP@50, mAP@50-95, F1 scores
+- **System**: GPU name, memory usage, training time
+- **Paths**: model_path, results_path, config_path
+
+### 4.3 Registry Maintenance
+
+The registry automatically fills missing values from training artifacts:
+
+- **Hyperparameters** extracted from `args.yaml`
+- **Metrics** extracted from `results.csv`
+- **Paths** inferred from directory structure
+- **Estimates** for training time and GPU memory when not available
+
+## 6. Performance Comparison
 
 | Model | Variant | Dataset | Precision | Recall | mAP@0.5 | Training Time (min) | Parameters | GFLOPs |
 |-------|---------|---------|-----------|--------|---------|---------------------|------------|--------|
@@ -134,7 +169,7 @@ weight_decay: 0.0005
 - **YOLOv11n** reached near‑perfect precision/recall on the detection task but took 10× longer to train.
 - For ripeness detection (a 3‑class problem), YOLOv11n achieved 0.726 precision / 0.789 recall in 20 epochs.
 
-## 5. Decision Flowchart
+## 7. Decision Flowchart
 
 ```mermaid
 flowchart TD
@@ -154,7 +189,7 @@ flowchart TD
     H --> J[Deploy on target hardware]
 ```
 
-## 6. Deployment Considerations
+## 8. Deployment Considerations
 
 ### 6.1 Export Formats
 Both models can be exported to:
@@ -175,7 +210,7 @@ Both models can be exported to:
 | YOLOv8s | 22 MB | ≈180 MB | Raspberry Pi 4 (2 GB+) |
 | YOLOv11n | 5 MB | ≈80 MB | Raspberry Pi Zero (512 MB) |
 
-## 7. Why Both Models Are in the Registry
+## 9. Why Both Models Are in the Registry
 
 The project maintains experiments with both architectures because:
 
@@ -184,7 +219,7 @@ The project maintains experiments with both architectures because:
 3. **Ripeness detection** uses YOLOv11n because the task is simpler (3 classes) and benefits from the model’s efficiency.
 4. **Future‑proofing**: Keeping both families in the training registry allows quick switching if hardware constraints change.
 
-## 8. Recommendations for the Presentation
+## 10. Recommendations for the Presentation
 
 - **Lead with YOLOv8s** as the primary detector—highlight its 0.85+ mAP, real‑time performance, and edge compatibility.
 - **Mention YOLOv11n** as a lightweight alternative that was explored, showing the team’s thorough evaluation of the design space.

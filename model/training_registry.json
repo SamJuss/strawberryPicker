@@ -397,7 +397,17 @@
     "weighted_avg_precision": 0.0,
     "weighted_avg_recall": 0.0,
     "weighted_avg_f1": 0.0,
-    "config_path": "model/detection/kaggle_strawberry_yolov8n_20251204_115538/args.yaml"
+    "config_path": "model/detection/kaggle_strawberry_yolov8n_20251204_115538/args.yaml",
+    "confusion_matrix": [
+      [
+        0,
+        0
+      ],
+      [
+        217,
+        283
+      ]
+    ]
   },
   {
     "run_id": "kaggle_strawberry_yolov8s_20251204_2105262",
@@ -427,7 +437,17 @@
     "weighted_avg_precision": 0.0,
     "weighted_avg_recall": 0.0,
     "weighted_avg_f1": 0.0,
-    "config_path": "model/detection/kaggle_strawberry_yolov8s_20251204_2105262/args.yaml"
+    "config_path": "model/detection/kaggle_strawberry_yolov8s_20251204_2105262/args.yaml",
+    "confusion_matrix": [
+      [
+        0,
+        0
+      ],
+      [
+        484,
+        16
+      ]
+    ]
   },
   {
     "run_id": "optimized_yolov8n_20251204_154529",
@@ -457,7 +477,17 @@
     "weighted_avg_precision": 0.0,
     "weighted_avg_recall": 0.0,
     "weighted_avg_f1": 0.0,
-    "config_path": "model/detection/optimized_yolov8n_20251204_154529/args.yaml"
+    "config_path": "model/detection/optimized_yolov8n_20251204_154529/args.yaml",
+    "confusion_matrix": [
+      [
+        0,
+        0
+      ],
+      [
+        76,
+        424
+      ]
+    ]
   },
   {
     "run_id": "run_20251211_213315",

@@ -55,6 +55,8 @@ flowchart LR
 | run_20251213_102620 | 2025-12-13 | ripeness_detection | YOLOv11n | 10/10 | 16 | 0.002 | 0.7005 | 0.7919 | 0.7434 | 3.09 | 10 | 2.07 |
 | run_20251213_121517 | 2025-12-13 | ripeness_detection | YOLOv11n | 20/20 | 16 | 0.002 | 0.7264 | 0.7891 | 0.7565 | 4.74 | 20 | 2.08 |
 
+**Note on missing values**: Some entries lack certain metrics (e.g., batch size, learning rate, inference time) because they were logged from different experiment sources (Kaggle competition, early runs with limited logging). The missing values are denoted as "N/A" in the tables.
+
 ## Key Insights from Training Registry
 
 - **Best detection model**: `kaggle_strawberry_yolov8n_20251204_115538` achieves mAP@50 of **0.989** with 50 epochs, indicating near‑perfect detection on the Kaggle dataset.

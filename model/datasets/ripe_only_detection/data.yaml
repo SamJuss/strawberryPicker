@@ -1,0 +1,12 @@
+names:
+- ripe
+nc: 1
+roboflow:
+  license: CC BY 4.0
+  project: strawberry-ripeness-detection-48rpf
+  url: https://universe.roboflow.com/strawberry-ripeness-detection-p8bvl/strawberry-ripeness-detection-48rpf/dataset/6
+  version: 6
+  workspace: strawberry-ripeness-detection-p8bvl
+test: test/images
+train: train/images
+val: val/images

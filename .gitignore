@@ -124,3 +124,17 @@ debug_images/
 # ============================================
 # Robot Specific
 # ============================================
+
+# ============================================
+# Pretrained Model Weights (downloaded files)
+# ============================================
+# Ignore pretrained weights in root directory
+/*.pt
+# But allow them in model directories where they should be tracked
+!model/**/*.pt
+!huggingfacemodel/**/*.pt
+!cam_callibration/**/*.pt
+!ros2/**/*.pt
+
+# Avoid tracking enormous epoch checkpoints that exceed GitHub limits
+model/detection/ripe_only_yolov8m_100epochs_20251219_121440/weights/*

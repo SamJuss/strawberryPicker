@@ -9,8 +9,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 // Arm lengths in cm
 #define L1 20.0
-#define L2 14.5
-#define L3 8.0
+#define L2 13.2
+#define L3 7.0
 
 // Servos
 #define SERVO_BASE 0
@@ -18,6 +18,12 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVO_ELBOW 2
 #define SERVO_WRIST 3
 #define SERVO_SCISSOR 4
+
+// Safety limits
+#define SHOULDER_MAX 160
+#define SHOULDER_MIN 10
+#define ELBOW_MAX 140
+#define WRIST_MIN_WHEN_ELBOW_MAX 90
 
 float currentAngles[5] = {90, 125, 110, 120, 180};
 float targetAngles[5]  = {90, 125, 110, 120, 180};
@@ -27,46 +33,68 @@ int angleToPulse(float angle) {
 }
 
 // ======================================================
+// SAFETY CHECK FUNCTION
+// ======================================================
+bool isSafeToMove(float shoulder, float elbow, float wrist) {
+  // Check shoulder limits
+  if (shoulder > SHOULDER_MAX) {
+    Serial.print("UNSAFE: Shoulder angle ");
+    Serial.print(shoulder);
+    Serial.print(" exceeds maximum of ");
+    Serial.println(SHOULDER_MAX);
+    return false;
+  }
+  
+  if (shoulder < SHOULDER_MIN) {
+    Serial.print("UNSAFE: Shoulder angle ");
+    Serial.print(shoulder);
+    Serial.print(" is below minimum of ");
+    Serial.println(SHOULDER_MIN);
+    return false;
+  }
+  
+  // Check elbow limits
+  if (elbow > ELBOW_MAX) {
+    Serial.print("UNSAFE: Elbow angle ");
+    Serial.print(elbow);
+    Serial.print(" exceeds maximum of ");
+    Serial.println(ELBOW_MAX);
+    return false;
+  }
+  
+  // Check wrist limits when elbow is at max
+  if (elbow >= ELBOW_MAX && wrist < WRIST_MIN_WHEN_ELBOW_MAX) {
+    Serial.print("UNSAFE: Wrist angle ");
+    Serial.print(wrist);
+    Serial.print(" is below minimum of ");
+    Serial.print(WRIST_MIN_WHEN_ELBOW_MAX);
+    Serial.print(" when elbow is at ");
+    Serial.println(elbow);
+    return false;
+  }
+  
+  return true;
+}
+
+// ======================================================
 // FORWARD KINEMATICS (UNMODIFIED — MATCHES YOUR MODEL)
 // ======================================================
-void computeForwardKinematics(float theta0, float theta1, float theta2,
-                              float &x, float &y, float &z)
-{
+void computeForwardKinematics(float theta0, float theta1, float theta2, float &x, float &y, float &z){
   float t0 = theta0 * PI / 180.0;
   float t1 = theta1 * PI / 180.0;
   float t2 = (theta2 - theta1) * PI / 180.0;
 
+  float base_offset = 1.4;
+  float base_offset_x = base_offset * cos(t0);
+  float base_offset_y = base_offset * sin(t0);
+
   float y_arm = L1 * cos(t1) + L2 * cos(t2) + L3;
   float z_arm = L1 * sin(t1) - L2 * sin(t2);
 
-  x = y_arm * cos(t0);
-  y = y_arm * sin(t0);
-  z = z_arm;
+  x = y_arm * cos(t0) + base_offset_x;
+  y = y_arm * sin(t0) + base_offset_y;
+  z = z_arm + 7.5; // height offset from ground to shoulder
 }
-float computeWristAngle(float theta1, float theta2, float targetZ)
-{
-  float L1_Z = L1 * fabs(sin(theta1 * PI / 180.0));
-  float wristDiffAngle = fabs(theta2 - ((theta2 - 90) * 2) - theta1);
-  float Wrist_Y = L3 + L2 * cos(wristDiffAngle * PI / 180.0);
-  float Wrist_Z = L2 * sin(wristDiffAngle * PI / 180.0);
-
-  if (Wrist_Z == 0.0f)
-    return 90.0f;
-
-  float Wrist_ZY = sqrt(Wrist_Y * Wrist_Y + Wrist_Z * Wrist_Z);
-  float wristtrig = (L3 * L3 + L2 * L2 - Wrist_ZY * Wrist_ZY) / (2 * L3 * L2);
-  wristtrig = constrain(wristtrig, -1, 1);
-  float wristtrig_angle = acos(wristtrig);
-
-  float theta3_before = (wristtrig_angle - PI / 2) * 180.0 / PI;
-
-  if (L1_Z <= targetZ)
-    return theta3_before;
-
-  return theta3_before - ((theta3_before - 90) * 2);
-}
-
-
 
 // ======================================================
 // INVERSE KINEMATICS (MATCHES YOUR FK EXACTLY)
@@ -80,10 +108,9 @@ bool computeInverseKinematics(float x, float y, float z,
 {
   //prep
   float arm_length = sqrt(x*x + y*y);
-  float z_length = z;
+  float Z = z - 9.0; // height offset from ground to shoulder
 
   float L3_offset = arm_length - L3;
-  float Z = z_length;
 
   float C = sqrt(L3_offset * L3_offset + Z*Z);
   if (C > L1 + L2 || C < fabs(L1 - L2))
@@ -217,32 +244,13 @@ void moveToDefaultAngles() {
   moveToTargetAngles(0.125, 0.25);
 }
 
-void moveToNinetyDegrees() {
-  targetAngles[SERVO_BASE]     = 90;
-  targetAngles[SERVO_SHOULDER] = 95;
-  targetAngles[SERVO_ELBOW]    = 80;
-  targetAngles[SERVO_WRIST]    = 90;
-  targetAngles[SERVO_SCISSOR]  = 180;
-  moveToTargetAngles(0.125, 0.25);
-}
-
-void moveToExtendedPosition() {
-  targetAngles[SERVO_BASE]     = 90;
-  targetAngles[SERVO_SHOULDER] = 50;
-  targetAngles[SERVO_ELBOW]    = 35;
-  targetAngles[SERVO_WRIST]    = 45;
-  targetAngles[SERVO_SCISSOR]  = 180;
-  moveToTargetAngles(0.125, 0.25);
-}
-
 // ======================================================
 // SETUP
 // ======================================================
 void setup() {
   Serial.begin(9600);
   Serial.println("READY");
-  Serial.println("Enter i x y z");
-  Serial.println("Enter f t0 t1 t2");
+  Serial.println("Enter coordinates in format: x,y,z");
 
   pwm.begin();
   pwm.setPWMFreq(50);
@@ -252,7 +260,7 @@ void setup() {
     pwm.setPWM(i, 0, angleToPulse(currentAngles[i]));
   }
   
-  moveToDefaultAngles();
+  // moveToDefaultAngles();
 }
 
 // ======================================================
@@ -261,13 +269,25 @@ void setup() {
 void loop() {
   static bool armBusy = false; // serial modified
   if (armBusy) { // serial modified
-  while (Serial.available()) Serial.read(); //serial modified
-  return; //serial modified
-} // serial modified
+    while (Serial.available()) Serial.read(); //serial modified
+    return; //serial modified
+  } // serial modified
+  
   if (!Serial.available()) return;
 
   String input = Serial.readStringUntil('\n');
   input.trim();
+  
+  // Debug: Echo raw input
+  Serial.print("DEBUG: Raw input received: '");
+  Serial.print(input);
+  Serial.println("'");
+  
+  // Check if input is empty
+  if (input.length() == 0) {
+    Serial.println("DEBUG: Empty input, ignoring");
+    return;
+  }
 
   // // Check command mode: IK or FK //original
   // if (input.startsWith("i")) { //original
@@ -276,236 +296,127 @@ void loop() {
     // input = input.substring(2); //original
     // input.trim(); //original
 
-    int s1 = input.indexOf(' ');
-    int s2 = input.indexOf(' ', s1 + 1);
-    if (s1 < 0 || s2 < 0) {
-      //Serial.println("Use: IK x y z"); //original
-      Serial.println("Use: x y z"); //serial modified
-      Serial.println("DONE"); //serial modified
-      armBusy = false; // serial modified
-      Serial.println("READY"); //serial modified
-      return;
-    }
-
-    float x = input.substring(0, s1).toFloat();
-    float y = input.substring(s1 + 1, s2).toFloat(); //switch z and y to recieve xzy
-    float z = input.substring(s2 + 1).toFloat();
-
-    float t0, t1, t2, t3;
-    float dbgTrig, dbgRight, dbgElbow, dbgWrist;
-    if (!computeInverseKinematics(x, y, z, t0, t1, t2, t3, dbgTrig, dbgRight, dbgElbow, dbgWrist)) {
-      Serial.println("IK unreachable.");
-      Serial.println("DONE"); //serial modified
-      armBusy = false; // serial modified
-      Serial.println("READY"); //serial modified
-      return;
-    }
-
-    Serial.print("Shoulder trig angle (deg): ");
-    Serial.println(dbgTrig);
-    Serial.print("Shoulder right angle (deg): ");
-    Serial.println(dbgRight);
-    Serial.print("Elbow angle (deg): ");
-    Serial.println(dbgElbow);
-    Serial.print("Wrist angle (deg): ");
-    Serial.println(dbgWrist);
-
-    targetAngles[SERVO_BASE]     = t0;
-    targetAngles[SERVO_SHOULDER] = t1 + 5;
-    targetAngles[SERVO_ELBOW]    = t2 - ((t2 - 90) * 2) - 10;
-    targetAngles[SERVO_WRIST]    = t3 - ((t3 - 90) * 2);
-
-    // Move arm first
-    moveToTargetAngles(0.125, 0.25);
-
-    delay(3000); 
-
-    // Then move scissor
-    moveScissorOnce(70);
-    delay(500);
-    moveScissorSecond(120);
-    delay(500);
-    moveScissorOnce(70);
-    delay(500);
-    moveScissorSecond(120);
-    delay(500);
-    moveScissorOnce(70);
-    delay(500);
-    moveScissorSecond(120);
-    delay(500);
-    moveScissorOnce(70);
-    delay(500);
-    moveScissorSecond(120);
-
-    delay(1000);
-
-    moveToDefaultAngles();
-
-    // FK check of the IK actual angles 
-    float base_math   = currentAngles[SERVO_BASE];
-    float shoulder_math = (currentAngles[SERVO_SHOULDER] - 5);
-    float elbow_math  = currentAngles[SERVO_ELBOW] + 10;
-    float fkx, fky, fkz;
-    computeForwardKinematics(base_math, shoulder_math, elbow_math, fkx, fky, fkz);
-
-    // Serial.println("=== IK RESULTS ==="); //original
-    // Serial.print("IK Angles: "); //original
-    // Serial.print(t0); Serial.print(" "); //original
-    // Serial.print(t1); Serial.print(" "); //original
-    // Serial.println(t2); //original
-    
-
-    Serial.print("Actual Servo Angles: ");
-    Serial.print(currentAngles[0]); Serial.print(" ");
-    Serial.print(currentAngles[1]); Serial.print(" ");
-    Serial.println(currentAngles[2]);
-
-    Serial.print("FK of IK angles: ");
-    Serial.print(fkx); Serial.print(" ");
-    Serial.print(fky); Serial.print(" ");
-    Serial.println(fkz);
-
-    Serial.println("===================");
-    Serial.println(" ");
-
-    Serial.println("DONE");
-    armBusy = false;
-    Serial.println("READY");
-
+  // Parse comma-separated values: x,y,z
+  int c1 = input.indexOf(',');
+  int c2 = input.indexOf(',', c1 + 1);
+  
+  // Debug: Show comma positions
+  Serial.print("DEBUG: First comma at position: ");
+  Serial.println(c1);
+  Serial.print("DEBUG: Second comma at position: ");
+  Serial.println(c2);
+  
+  if (c1 < 0 || c2 < 0) {
+    //Serial.println("Use: IK x y z"); //original
+    Serial.println("ERROR: Invalid format! Use: x,y,z"); //serial modified
+    Serial.println("DONE"); //serial modified
+    armBusy = false; // serial modified
+    Serial.println("READY"); //serial modified
+    return;
   }
 
-  // else if (input.startsWith("f")) {
-  //   input = input.substring(2);
-  //   input.trim();
+  float x = input.substring(0, c1).toFloat();
+  float z = input.substring(c1 + 1, c2).toFloat(); //switch z and y to recieve xzy
+  float y = input.substring(c2 + 1).toFloat();
 
-  //   int s1 = input.indexOf(' ');
-  //   int s2 = input.indexOf(' ', s1 + 1);
-  //   if (s1 < 0 || s2 < 0) {
-  //     Serial.println("Use: F t0 t1 t2");
-  //     return;
-  //   }
+  // Validate parsed values
+  Serial.println("DEBUG: Successfully parsed coordinates:");
+  Serial.print("  X: ");
+  Serial.println(x);
+  Serial.print("  Y: ");
+  Serial.println(y);
+  Serial.print("  Z: ");
+  Serial.println(z);
 
-  //   float t0 = input.substring(0, s1).toFloat();
-  //   float t1 = input.substring(s1 + 1, s2).toFloat();
-  //   float t2 = input.substring(s2 + 1).toFloat();
+  float t0, t1, t2, t3;
+  float dbgTrig, dbgRight, dbgElbow, dbgWrist;
+  if (!computeInverseKinematics(x, y, z, t0, t1, t2, t3, dbgTrig, dbgRight, dbgElbow, dbgWrist)) {
+    Serial.println("IK unreachable.");
+    Serial.println("DONE"); //serial modified
+    armBusy = false; // serial modified
+    Serial.println("READY"); //serial modified
+    return;
+  }
 
-  //   float t3 = computeWristAngle(t1, t2, 0.0f);
+  Serial.print("Shoulder trig angle (deg): ");
+  Serial.println(dbgTrig);
+  Serial.print("Shoulder right angle (deg): ");
+  Serial.println(dbgRight);
+  Serial.print("Elbow angle (deg): ");
+  Serial.println(dbgElbow);
+  Serial.print("Wrist angle (deg): ");
+  Serial.println(dbgWrist);
 
-  //   // Direct servo movement with offsets
-  //   targetAngles[SERVO_BASE]     = t0;
-  //   targetAngles[SERVO_SHOULDER] = t1 + 5;
-  //   targetAngles[SERVO_ELBOW]    = t2 - 10;
-  //   targetAngles[SERVO_WRIST]    = t3;
+  float proposed_shoulder = t1 + 5;
+  float proposed_elbow = t2 - ((t2 - 90) * 2) - 10;
+  float proposed_wrist = t3 - ((t3 - 90) * 2);
 
-  //   // Move arm first
-  //   moveToTargetAngles(0.125, 0.25);
+  // SAFETY CHECK BEFORE MOVING
+  if (!isSafeToMove(proposed_shoulder, proposed_elbow, proposed_wrist)) {
+    Serial.println("MOVEMENT BLOCKED - Unsafe angles detected!");
+    Serial.println("Arm will not move.");
+    return;
+  }
 
-  //   delay(3000);
+  targetAngles[SERVO_BASE]     = t0;
+  targetAngles[SERVO_SHOULDER] = proposed_shoulder;
+  targetAngles[SERVO_ELBOW]    = proposed_elbow;
+  targetAngles[SERVO_WRIST]    = proposed_wrist;
 
-  //   // Then move scissor
-  //   moveScissorOnce(70);
-  //   delay(500);
-  //   moveScissorSecond(120);
-  //   delay(500);
-  //   moveScissorOnce(70);
-  //   delay(500);
-  //   moveScissorSecond(120);
-  //   delay(500);
-  //   moveScissorOnce(70);
-  //   delay(500);
-  //   moveScissorSecond(120);
-  //   delay(500);
-  //   moveScissorOnce(70);
-  //   delay(500);
-  //   moveScissorSecond(120);
+  // Move arm first
+  moveToTargetAngles(0.125, 0.25);
 
-  //   delay(1000);
+  // delay(3000); 
 
-  //   moveToDefaultAngles();
+  // // Then move scissor
+  // moveScissorOnce(70);
+  // delay(500);
+  // moveScissorSecond(120);
+  // delay(500);
+  // moveScissorOnce(70);
+  // delay(500);
+  // moveScissorSecond(120);
+  // delay(500);
+  // moveScissorOnce(70);
+  // delay(500);
+  // moveScissorSecond(120);
+  // delay(500);
+  // moveScissorOnce(70);
+  // delay(500);
+  // moveScissorSecond(120);
 
-  //   float fx, fy, fz;
-  //   computeForwardKinematics(t0, t1, t2, fx, fy, fz);
+  // delay(1000);
 
-  //   Serial.println("=== FK INPUT ===");
-  //   Serial.print("FK Input Angles: ");
-  //   Serial.print(t0); Serial.print(" ");
-  //   Serial.print(t1); Serial.print(" ");
-  //   Serial.println(t2);
+  // moveToDefaultAngles(); //unlock when fixed
 
-  //   Serial.print("Actual Servo Angles: ");
-  //   Serial.print(currentAngles[0]); Serial.print(" ");
-  //   Serial.print(currentAngles[1]); Serial.print(" ");
-  //   Serial.print(currentAngles[2]); Serial.print(" ");
-  //   Serial.println(currentAngles[3]);
+  // FK check of the IK actual angles 
+  float base_math   = currentAngles[SERVO_BASE];
+  float shoulder_math = (currentAngles[SERVO_SHOULDER] - 5);
+  float elbow_math  = currentAngles[SERVO_ELBOW] + 10;
+  float fkx, fky, fkz;
+  computeForwardKinematics(base_math, shoulder_math, elbow_math, fkx, fky, fkz);
 
-  //   Serial.print("FK Result XYZ: ");
-  //   Serial.print(fx); Serial.print(" ");
-  //   Serial.print(fy); Serial.print(" ");
-  //   Serial.println(fz);
-  //   Serial.println("=================");
-  //   Serial.println(" ");
-  // }
+  Serial.println("=== IK RESULTS ==="); 
+  Serial.print("IK Angles: "); 
+  Serial.print(t0); Serial.print(" "); 
+  Serial.print(t1); Serial.print(" "); 
+  Serial.println(t2); 
 
-//   else if (input.startsWith("r")) {
-//   moveToDefaultAngles();
-//   float fx, fy, fz;
-//   computeForwardKinematics(currentAngles[SERVO_BASE], currentAngles[SERVO_SHOULDER], currentAngles[SERVO_ELBOW], fx, fy, fz);
+  Serial.print("Actual Servo Angles: ");
+  Serial.print(currentAngles[0]); Serial.print(" ");
+  Serial.print(currentAngles[1]); Serial.print(" ");
+  Serial.println(currentAngles[2]);
 
-//   Serial.println("=== RESET ===");
+  Serial.print("FK of IK angles: ");
+  Serial.print(fkx); Serial.print(" ");
+  Serial.print(fky); Serial.print(" ");
+  Serial.println(fkz);
 
-//   Serial.print("Actual Servo Angles: ");
-//   Serial.print(currentAngles[0]); Serial.print(" ");
-//   Serial.print(currentAngles[1]); Serial.print(" ");
-//   Serial.print(currentAngles[2]); Serial.print(" ");
-//   Serial.println(currentAngles[3]);
+  Serial.println("===================");
+  Serial.println(" ");
 
-//   Serial.print("Current XYZ: ");
-//   Serial.print(fx); Serial.print(" ");
-//   Serial.print(fy); Serial.print(" ");
-//   Serial.println(fz);
-//   Serial.println("=================");
-//   Serial.println(" ");
-//   }
+  Serial.println("DONE");
+  armBusy = false;
+  Serial.println("READY");
 
-//   else if (input.startsWith("9")) {
-//   moveToNinetyDegrees();
-//   float fx, fy, fz;
-//   computeForwardKinematics(currentAngles[SERVO_BASE], currentAngles[SERVO_SHOULDER], currentAngles[SERVO_ELBOW], fx, fy, fz);
-
-//   Serial.println("=== RESET ===");
-
-//   Serial.print("Actual Servo Angles: ");
-//   Serial.print(currentAngles[0]); Serial.print(" ");
-//   Serial.print(currentAngles[1]); Serial.print(" ");
-//   Serial.print(currentAngles[2]); Serial.print(" ");
-//   Serial.println(currentAngles[3]);
-
-//   Serial.print("Current XYZ: ");
-//   Serial.print(fx); Serial.print(" ");
-//   Serial.print(fy); Serial.print(" ");
-//   Serial.println(fz);
-//   Serial.println("=================");
-//   Serial.println(" ");
-//   }
-
-//   else if (input.startsWith("e")) {
-//   moveToExtendedPosition();
-//   float fx, fy, fz;
-//   computeForwardKinematics(currentAngles[SERVO_BASE], currentAngles[SERVO_SHOULDER], currentAngles[SERVO_ELBOW], fx, fy, fz);
-
-//   Serial.println("=== RESET ===");
-
-//   Serial.print("Actual Servo Angles: ");
-//   Serial.print(currentAngles[0]); Serial.print(" ");
-//   Serial.print(currentAngles[1]); Serial.print(" ");
-//   Serial.print(currentAngles[2]); Serial.print(" ");
-//   Serial.println(currentAngles[3]);
-
-//   Serial.print("Current XYZ: ");
-//   Serial.print(fx); Serial.print(" ");
-//   Serial.print(fy); Serial.print(" ");
-//   Serial.println(fz);
-//   Serial.println("=================");
-//   Serial.println(" ");
-//   }
-// }
+}

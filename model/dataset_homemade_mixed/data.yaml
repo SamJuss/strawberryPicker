@@ -1,0 +1,15 @@
+info:
+  created: '2025-12-22'
+  description: Homemade mixed dataset combining webcam images and ripeness-labeled
+    images
+  sources:
+  - homemade_webcam
+  - ripeness_labeled
+  total_images: 150
+names:
+- strawberry
+nc: 1
+path: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/dataset_homemade_mixed
+test: images/test
+train: images/train
+val: images/valid

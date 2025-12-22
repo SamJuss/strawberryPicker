@@ -191,41 +191,12 @@ tensorboard --logdir model/results
 3. Review error messages carefully
 4. Check dataset structure matches expected format
 
-## Training Registry and Experiment Tracking
-
-All training runs are automatically logged to a centralized registry for easy comparison and analysis.
-
-### Viewing Training History
-
-```bash
-# View all training runs with summary table
-python model/view_registry.py
-
-# Export registry to CSV for analysis
-python3 -c "from model.validation.training_registry import get_registry; get_registry().export_to_csv()"
-```
-
-The registry captures:
-- **Hyperparameters**: batch size, learning rate, epochs, optimizer
-- **Performance metrics**: precision, recall, mAP@50, F1 scores
-- **System information**: GPU usage, training time, hardware specs
-- **File paths**: model weights, results, configuration files
-
-### Registry Maintenance
-
-The registry automatically fills missing values from training artifacts:
-- Extracts hyperparameters from `args.yaml`
-- Parses metrics from `results.csv`
-- Estimates training time and GPU memory when not available
-- Calculates derived metrics like F1 scores
-
 ## Next Steps After Training
 
 1. **Export models**: ONNX, TensorFlow Lite formats
 2. **Test inference**: Run on sample images
 3. **Deploy to Raspberry Pi**: Optimize for edge deployment
 4. **Integrate with robot**: Connect to robotic arm control
-5. **Review registry**: Compare with previous experiments
 
 ## Performance Optimization Tips
 

@@ -1,0 +1,7 @@
+names:
+- strawberry
+nc: 1
+path: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/dataset_mixed_conservative_v2
+test: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/dataset_mixed_conservative_v2/images/test
+train: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/dataset_mixed_conservative_v2/images/train
+val: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/dataset_mixed_conservative_v2/images/valid

@@ -1,0 +1,11 @@
+enhancement:
+  enhancement_date: '2025-12-22'
+  ripe_strawberries_added: 200
+  source: Fruit Ripeness Dataset - RipeStrawberry
+names:
+- strawberry
+nc: 1
+path: /home/user/machine-learning/GitHubRepos/strawberryPicker/model/dataset_mixed_conservative
+test: test/images
+train: train/images
+val: valid/images

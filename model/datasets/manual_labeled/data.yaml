@@ -1,0 +1,23 @@
+# Dataset configuration for manually labeled strawberries
+train: model/datasets/manual_labeled/train/images
+val: model/datasets/manual_labeled/val/images
+test: model/datasets/manual_labeled/test/images
+
+# Classes
+nc: 1  # number of classes
+names: ['strawberry']  # class names
+
+# Roboflow metadata (for format compatibility)
+roboflow:
+  workspace: strawberry-picking
+  project: manual-labeled-dataset
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/strawberry-picking/manual-labeled-dataset
+
+# Manual annotation metadata
+manual_annotation:
+  annotator: human
+  quality_control: manual_review
+  purpose: robotic_picking_optimization
+  target_accuracy: 95%

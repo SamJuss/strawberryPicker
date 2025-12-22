@@ -138,3 +138,20 @@ debug_images/
 
 # Avoid tracking enormous epoch checkpoints that exceed GitHub limits
 model/detection/ripe_only_yolov8m_100epochs_20251219_121440/weights/*
+
+# ============================================
+# Kaggle Datasets (Large external datasets)
+# ============================================
+# Kaggle strawberry ripeness dataset (2,500+ images)
+model/train/
+model/datasets/kaggle*/
+model/dataset_kaggle*/
+# Kaggle fruit ripeness dataset
+model/dataset_fruit_ripeness/
+model/dataset_strawberry_ripeness/
+# Large downloaded datasets
+*.zip
+datasets/*.zip
+model/datasets/*.zip
+# Kaggle API credentials
+kaggle.json
